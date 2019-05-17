@@ -241,7 +241,7 @@ public class ChatActivity extends AppCompatActivity {
                                     InputConnection ic = MessageInputText.onCreateInputConnection(new EditorInfo());
                                     keyboard.setInputConnection(ic);
 
-                                    Toast.makeText(ChatActivity.this, "aici...", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChatActivity.this, "aici voice...", Toast.LENGTH_SHORT).show();
 
                                     StartListeningButton.setOnClickListener(new View.OnClickListener() {
                                         @Override

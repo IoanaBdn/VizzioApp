@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "82262512173",
+    "firebase_url": "https://vizzioapp.firebaseio.com",
+    "project_id": "vizzioapp",
+    "storage_bucket": "vizzioapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82262512173:android:8d2b03dff6c5d76b",
+        "android_client_info": {
+          "package_name": "com.example.ioana.vizzioapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "82262512173-g74k06uu4556n0t3753rodamhitniibe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ioana.vizzioapp",
+            "certificate_hash": "af77ff1b274eee64bf4d157f9bc52f8ab8fc8b0b"
+          }
+        },
+        {
+          "client_id": "82262512173-nkm94530np62u9bcdttojp179g87nqfm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAr1S6XRu8AYj4N-vCtkL4nnJ3ibA_6aRg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "82262512173-nkm94530np62u9bcdttojp179g87nqfm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

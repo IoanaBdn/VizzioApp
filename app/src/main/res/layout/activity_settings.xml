@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsActivity">
+
+    <include
+        layout="@layout/bar_layout"
+        android:id="@+id/settings_toolbar"></include>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/set_profile_image"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:src="@drawable/profile_image"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        app:civ_border_width="5dp"
+        app:civ_border_color="@color/colorPrimary"/>
+
+    <EditText
+        android:id="@+id/set_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/set_profile_image"
+        android:inputType="textMultiLine"
+        android:hint="username"
+        android:textAlignment="center"
+
+        android:drawableStart="@drawable/edit_profile"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:background="@drawable/inputs"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"
+        android:maxLines="2"
+
+        />
+
+    <EditText
+        android:id="@+id/set_profile_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/set_user_name"
+        android:inputType="textMultiLine"
+        android:hint="Hey, I am avaible now."
+        android:textAlignment="center"
+        android:drawableStart="@drawable/edit_status"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:background="@drawable/inputs"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"
+        android:maxLines="3"
+        />
+
+    <RelativeLayout
+        android:id="@+id/layout_profile_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/set_profile_status"
+
+        android:padding="15dp"
+        >
+
+        <TextView
+            android:id="@+id/label_profile_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="Profile type:"
+            />
+
+        <!--app:cardCornerRadius="20dp"-->
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:elevation="1dp"
+
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            android:layout_below="@+id/label_profile_type"
+
+            >
+            <Spinner
+                android:id="@+id/spinner_ProfileType"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+
+                />
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_input_method"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_profile_type"
+
+        android:padding="15dp"
+        >
+
+        <TextView
+            android:id="@+id/label_input_method"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="Choose input method:"
+            />
+
+        <!--app:cardCornerRadius="20dp"-->
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:elevation="1dp"
+
+            android:innerRadius="0dp"
+            android:shape="ring"
+            android:thicknessRatio="1.9"
+            android:layout_below="@+id/label_input_method"
+
+
+
+            >
+            <Spinner
+                android:id="@+id/spinner_InputMethod"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+
+                />
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+
+
+    <Button
+        android:id="@+id/update_settings_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_input_method"
+        android:inputType="textMultiLine"
+      android:text="Update"
+        android:textAlignment="center"
+
+        android:textColor="@android:color/background_light"
+        android:textStyle="bold"
+        android:background="@drawable/buttons"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="6dp"
+        android:layout_marginTop="10dp"
+        android:textSize="20sp"
+
+        />
+
+</RelativeLayout>

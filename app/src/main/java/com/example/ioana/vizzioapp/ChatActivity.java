@@ -4,9 +4,16 @@ package com.example.ioana.vizzioapp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.inputmethodservice.Keyboard;
+import android.inputmethodservice.KeyboardView;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +21,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
@@ -39,6 +49,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -66,14 +77,93 @@ public class ChatActivity extends AppCompatActivity {
 
     //voice keyboard
     private VoiceInputKeyboard keyboard ;
+    //normal keyboard
+    private CustomKeyboard mCustomKeyboard;
+  
     private ImageButton StartListeningButton;
     private ImageButton StopListeningButton;
+    private ImageButton BackspaceButton;
+    private ImageButton KeyboardButton;
+
+
+    protected SpeechRecognizer mSpeechRecognizer;
+    protected Intent mSpeechRecognizerIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        adjustFontScale( getResources().getConfiguration(), (float) 1.5);
+
+        int arg1 = 100;
+        adjustScreenBrightness(arg1);
+        int arg2 = 100;
+
+        //adjustScreenContrast(arg2);
+
+
         setContentView(R.layout.activity_chat);
+
+        mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        mSpeechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, Locale.getDefault());
+
+        mSpeechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle params)
+            {
+
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+
+            }
+
+            @Override
+            public void onRmsChanged(float rmsdB) {
+
+            }
+
+            @Override
+            public void onBufferReceived(byte[] buffer) {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+
+            }
+
+            @Override
+            public void onError(int error) {
+
+            }
+
+            @Override
+            public void onResults(Bundle results)
+            {
+                ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+
+                if(matches!=null)
+                {
+                    MessageInputText.setText(matches.get(0));
+                }
+
+            }
+
+            @Override
+            public void onPartialResults(Bundle partialResults) {
+
+            }
+
+            @Override
+            public void onEvent(int eventType, Bundle params) {
+
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         messageSenderID = mAuth.getCurrentUser().getUid();
@@ -111,6 +201,51 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+
+
+
+    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!/////
+
+
+    public  void adjustFontScale(Configuration configuration, float scale) {
+
+        configuration.fontScale = scale;
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        metrics.scaledDensity = configuration.fontScale * metrics.density;
+        getBaseContext().getResources().updateConfiguration(configuration, metrics);
+
+    }
+
+
+    private void adjustScreenContrast(int value)
+    {
+        float BackLightValue = (float)value/100;
+       // float BackLightValue = (float)value;
+
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
+        //layoutParams.screenBrightness = BackLightValue; // Set Value
+        layoutParams.alpha = (float)0.2; // Set Value
+
+
+        getWindow().setAttributes(layoutParams); // Set params
+
+    }
+
+    private void adjustScreenBrightness(int value)
+    {
+        float BackLightValue = (float)value/100;
+
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
+        layoutParams.screenBrightness = BackLightValue; // Set Value
+
+        getWindow().setAttributes(layoutParams); // Set params
+
+    }
+
+
+    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!/////
 
 
     private void InitializeControllers()
@@ -203,29 +338,15 @@ public class ChatActivity extends AppCompatActivity {
                             switch (inputMethod)
                             {
                                 case "Voice Input Keyboard":
-                                    keyboard = (VoiceInputKeyboard) findViewById(R.id.keyboard);
+                                    keyboard = (VoiceInputKeyboard) findViewById(R.id.keyboard_voice);
                                     StartListeningButton = (ImageButton) findViewById(R.id.start_listen_btn);
                                     StopListeningButton = (ImageButton) findViewById(R.id.stop_listen_btn);
+                                    BackspaceButton = (ImageButton) findViewById(R.id.backspace_btn);
+                                    KeyboardButton = (ImageButton) findViewById(R.id.keyboard_btn);
 
 
-                                    // prevent system keyboard from appearing when EditText is tapped
-                                    //MessageInputText.setRawInputType(InputType.TYPE_CLASS_TEXT);
-                                    //MessageInputText.setTextIsSelectable(true);
 
-
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                        MessageInputText.setShowSoftInputOnFocus(false);
-                                    } else {
-                                        try {
-                                            final Method method = EditText.class.getMethod(
-                                                    "setShowSoftInputOnFocus"
-                                                    , new Class[]{boolean.class});
-                                            method.setAccessible(true);
-                                            method.invoke(MessageInputText, false);
-                                        } catch (Exception e) {
-                                            // ignore
-                                        }
-                                    }
+                                    hideSystemKeyboard();
 
                                     MessageInputText.setOnTouchListener(new View.OnTouchListener()
                                     {
@@ -242,6 +363,7 @@ public class ChatActivity extends AppCompatActivity {
                                     keyboard.setInputConnection(ic);
 
                                     Toast.makeText(ChatActivity.this, "aici voice...", Toast.LENGTH_SHORT).show();
+
 
                                     StartListeningButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -272,6 +394,32 @@ public class ChatActivity extends AppCompatActivity {
                                     });
 
 
+
+
+                                    /*
+                                    StartListeningButton.setOnTouchListener(new View.OnTouchListener()
+                                    {
+                                        @Override
+                                        public boolean onTouch(View v, MotionEvent event)
+                                        {
+                                            switch (event.getAction())
+                                            {
+                                                case MotionEvent.ACTION_DOWN:
+                                                    MessageInputText.setHint("Listening...");
+                                                    mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
+                                                    break;
+                                                case MotionEvent.ACTION_UP:
+
+                                                    MessageInputText.setHint("You will see the message here");
+                                                    mSpeechRecognizer.stopListening();
+
+                                                    break;
+                                            }
+                                            return false;
+                                        }
+                                    });
+                                   */
+
                                     StopListeningButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v)
@@ -279,7 +427,8 @@ public class ChatActivity extends AppCompatActivity {
                                             if(PermissionHandler.checkPermission(ChatActivity.this,PermissionHandler.RECORD_AUDIO))
                                             {
 
-                                                if (mSpeechManager != null) {
+                                                if (mSpeechManager != null)
+                                                {
                                                     //MessageInputText.setText(getString(R.string.destroied));
                                                     mSpeechManager.destroy();
                                                     mSpeechManager = null;
@@ -292,7 +441,62 @@ public class ChatActivity extends AppCompatActivity {
                                                 PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,ChatActivity.this);
                                             }
                                         }
+
                                     });
+
+
+                                    /*
+                                    BackspaceButton.setOnClickListener(new View.OnClickListener()
+                                    {
+                                        @Override
+                                        public void onClick(View v)
+
+                                        {
+
+                                            int length = MessageInputText.getText().length();
+                                            if (length > 0) {
+                                                MessageInputText.getText().delete(length - 1, length);
+                                            }
+                                        }
+                                    });
+                                    */
+
+
+                                    BackspaceButton.setOnTouchListener(new RepeatListener(400, 100, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            // the code to execute repeatedly
+
+                                            int length = MessageInputText.getText().length();
+                                            if (length > 0) {
+                                                MessageInputText.getText().delete(length - 1, length);
+                                            }
+                                        }
+                                    }));
+
+                                    KeyboardButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v)
+                                        {
+                                            Log.d("KEYYYY","press",null);
+                                            keyboard.setVisibility(View.GONE);
+                                            mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.xml.normal_keyboard );
+
+                                            mCustomKeyboard.registerEditText(R.id.input_message);
+                                            MessageInputText.requestFocus();
+                                        }
+                                    });
+                                    break;
+                                case "Normal Keyboard":
+
+                                    hideSystemKeyboard();
+
+
+                                    mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.xml.normal_keyboard );
+
+                                    mCustomKeyboard.registerEditText(R.id.input_message);
+
+
                                     break;
                                 default: break;
                             }
@@ -315,6 +519,31 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    @Override public void onBackPressed() {
+        if( mCustomKeyboard.isCustomKeyboardVisible() ) mCustomKeyboard.hideCustomKeyboard(); else this.finish();
+    }
+
+    public void hideSystemKeyboard()
+    {
+        // prevent system keyboard from appearing when EditText is tapped
+        //MessageInputText.setRawInputType(InputType.TYPE_CLASS_TEXT);
+        //MessageInputText.setTextIsSelectable(true);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            MessageInputText.setShowSoftInputOnFocus(false);
+        } else {
+            try {
+                final Method method = EditText.class.getMethod(
+                        "setShowSoftInputOnFocus"
+                        , new Class[]{boolean.class});
+                method.setAccessible(true);
+                method.invoke(MessageInputText, false);
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -343,22 +572,22 @@ public class ChatActivity extends AppCompatActivity {
                 if(results!=null && results.size()>0)
                 {
 
-                    if(results.size()==1)
-                    {
+                   // if(results.size()==1)
+                    //{
                         mSpeechManager.destroy();
                         mSpeechManager = null;
                         MessageInputText.setText(results.get(0));
-                    }
-                    else {
-                        StringBuilder sb = new StringBuilder();
-                        if (results.size() > 5) {
-                            results = (ArrayList<String>) results.subList(0, 5);
-                        }
-                        for (String result : results) {
-                            sb.append(result).append("\n");
-                        }
-                        MessageInputText.setText(sb.toString());
-                    }
+                    //}
+                    //else {
+                    //    StringBuilder sb = new StringBuilder();
+                     //   if (results.size() > 5) {
+                     //       results = (ArrayList<String>) results.subList(0, 5);
+                       // }
+                        //for (String result : results) {
+                          //  sb.append(result).append("\n");
+                        //}
+                        //MessageInputText.setText(sb.toString());
+                    //}
                 }
                 else
                     MessageInputText.setText(getString(R.string.no_results_found));

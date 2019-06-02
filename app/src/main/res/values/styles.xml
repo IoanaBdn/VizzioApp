@@ -10,4 +10,23 @@
 
 
     <style name='AlertDialog' parent="Base.Theme.AppCompat.Light.Dialog"> </style>
+
+    <!-- FONT SIZES-->
+    <style name="FontTheme_Small" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+    <style name="FontTheme_Default" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+    <style name="FontTheme_Large" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+    <style name="FontTheme_Largest" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

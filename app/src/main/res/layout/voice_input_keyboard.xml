@@ -22,14 +22,13 @@
             android:padding="20sp">
 
             <ImageButton
-                android:id="@+id/button_switch_to_keyboard"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/keyboard_btn"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-
+                android:src="@drawable/keyboard_icon"
                 android:background="@drawable/round_shape"
-                android:tint="@color/colorPrimaryDark"
                 android:textColor="#f8fdf9"
                 />
 
@@ -76,11 +75,12 @@
             android:padding="20sp">
 
             <ImageButton
-                android:id="@+id/button_close"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/backspace_btn"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:src="@drawable/backspace_icon"
 
                 android:background="@drawable/round_shape"
                 android:textColor="#f8fdf9"

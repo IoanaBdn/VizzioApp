@@ -61,13 +61,24 @@
         </LinearLayout>
 
         <com.example.ioana.vizzioapp.VoiceInputKeyboard
-            android:id="@+id/keyboard"
+            android:id="@+id/keyboard_voice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/chat_line_layout"
             android:orientation="vertical"
             android:visibility="gone"
             />
+
+        <android.inputmethodservice.KeyboardView
+            android:id="@+id/keyboardview"
+            android:layout_below="@id/chat_line_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:visibility="gone" />
     </RelativeLayout>
 
 

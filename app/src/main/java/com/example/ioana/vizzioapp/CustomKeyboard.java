@@ -4,17 +4,23 @@ import android.app.Activity;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
+import android.media.AudioManager;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.Layout;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import static android.content.Context.AUDIO_SERVICE;
 
 
 class CustomKeyboard {
@@ -23,6 +29,10 @@ class CustomKeyboard {
     private KeyboardView mKeyboardView;
     /** A link to the activity that hosts the {@link #mKeyboardView}. */
     private Activity     mHostActivity;
+
+    private Keyboard mKeyboard;
+
+    Boolean isCaps = false;
 
     /** The key (code) handler. */
     private OnKeyboardActionListener mOnKeyboardActionListener = new OnKeyboardActionListener() {
@@ -37,10 +47,13 @@ class CustomKeyboard {
         public final static int CodeNext     = 55005;
         public final static int CodeClear    = 55006;
 
+        public final static int CodeVoiceKeyboard    = -4;
+
         @Override public void onKey(int primaryCode, int[] keyCodes) {
             // NOTE We can say '<Key android:codes="49,50" ... >' in the xml file; all codes come in keyCodes, the first in this list in primaryCode
             // Get the EditText and its Editable
 
+            /*
 
             View focusCurrent = mHostActivity.getWindow().getCurrentFocus();
 
@@ -82,6 +95,81 @@ class CustomKeyboard {
             } else { // insert character
                 editable.insert(start, Character.toString((char) primaryCode));
             }
+            */
+
+
+            View focusCurrent = mHostActivity.getWindow().getCurrentFocus();
+
+            //if( focusCurrent==null || focusCurrent.getClass()!=EditText.class ) return;
+            EditText edittext = (EditText) focusCurrent;
+            Editable editable = edittext.getText();
+
+
+
+            int start = edittext.getSelectionStart();
+
+
+            //InputConnection inputConnection = getCurrentInputConnection();
+            playClick(primaryCode);
+            switch (primaryCode){
+
+                case Keyboard.KEYCODE_DELETE:
+                    //inputConnection.deleteSurroundingText(1,0);
+                    if( editable!=null && start>0 ) editable.delete(start - 1, start);
+                    break;
+
+                case Keyboard.KEYCODE_SHIFT:
+                    isCaps = !isCaps;
+                    mKeyboard.setShifted(isCaps);
+                    mKeyboardView.invalidateAllKeys();
+                    break;
+
+                case CodeVoiceKeyboard:
+                    editable.insert(start, String.valueOf(109));
+                    break;
+
+                    /*
+                case Keyboard.KEYCODE_DONE:
+
+                    inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_ENTER));
+                    break;
+                    */
+
+                default:
+                    char code = (char) primaryCode;
+                    if(Character.isLetter(code) && isCaps){
+                        code = Character.toUpperCase(code);
+                    }
+                    //inputConnection.commitText(String.valueOf(code),1);
+                    editable.insert(start, String.valueOf(code));
+
+            }
+
+
+        }
+
+
+        private void playClick(int i){
+
+            AudioManager audioManager = (AudioManager) mHostActivity.getSystemService(AUDIO_SERVICE);
+            switch(i){
+                case 32:
+                    audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR);
+                    break;
+
+                case Keyboard.KEYCODE_DONE:
+                case 10:
+                    audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_RETURN);
+                    break;
+
+                case Keyboard.KEYCODE_DELETE:
+                    audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE);
+                    break;
+
+                default:
+                    audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
+            }
+
         }
 
         @Override public void onPress(int arg0) {
@@ -118,9 +206,10 @@ class CustomKeyboard {
      * @param layoutid The id of the xml file containing the keyboard layout.
      */
     public CustomKeyboard(Activity host, int viewid, int layoutid) {
-        mHostActivity= host;
-        mKeyboardView= (KeyboardView)mHostActivity.findViewById(viewid);
-        mKeyboardView.setKeyboard(new Keyboard(mHostActivity, layoutid));
+        mHostActivity = host;
+        mKeyboardView = (KeyboardView)mHostActivity.findViewById(viewid);
+        mKeyboard =   new Keyboard(mHostActivity, layoutid);
+        mKeyboardView.setKeyboard(mKeyboard);
         mKeyboardView.setPreviewEnabled(false); // NOTE Do not show the preview balloons
         mKeyboardView.setOnKeyboardActionListener(mOnKeyboardActionListener);
         // Hide the standard keyboard initially
@@ -162,8 +251,10 @@ class CustomKeyboard {
         });
         edittext.setOnClickListener(new OnClickListener() {
             // NOTE By setting the on click listener, we can show the custom keyboard again, by tapping on an edit box that already had focus (but that had the keyboard hidden).
-            @Override public void onClick(View v) {
-                showCustomKeyboard(v);
+            @Override public void onClick(View v)
+            {
+
+                    showCustomKeyboard(v);
             }
         });
         // Disable standard keyboard hard way
@@ -172,12 +263,17 @@ class CustomKeyboard {
             @Override public boolean onTouch(View v, MotionEvent event) {
                 EditText edittext = (EditText) v;
                 int inType = edittext.getInputType();       // Backup the input type
-                edittext.setInputType(InputType.TYPE_NULL); // Disable standard keyboard
+                //edittext.setInputType(InputType.TYPE_NULL); // Disable standard keyboard
                 edittext.onTouchEvent(event);               // Call native handler
                 edittext.setInputType(inType);              // Restore input type
+
                 return true; // Consume touch event
             }
         });
+
+
+
+
         // Disable spell check (hex strings look like words to Android)
         edittext.setInputType(edittext.getInputType() | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
     }

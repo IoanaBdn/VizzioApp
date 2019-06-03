@@ -94,7 +94,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        adjustFontScale( getResources().getConfiguration(), (float) 1.5);
+        //adjustFontScale( getResources().getConfiguration(), (float) 1.5);
 
         int arg1 = 100;
         adjustScreenBrightness(arg1);
@@ -478,7 +478,7 @@ public class ChatActivity extends AppCompatActivity {
                                         @Override
                                         public void onClick(View v)
                                         {
-                                            Log.d("KEYYYY","press",null);
+
                                             keyboard.setVisibility(View.GONE);
                                             mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.xml.normal_keyboard );
 

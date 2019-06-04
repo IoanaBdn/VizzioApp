@@ -185,10 +185,12 @@ public class MainActivity extends AppCompatActivity {
         {
             SendUserToSettingsActivity();
         }
+        /*
         if(item.getItemId() == R.id.main_create_group_option)
         {
             RequestNewGroup();
         }
+        */
         if(item.getItemId() == R.id.main_find_friends_option)
         {
             SendUserToFindFriendsActivity();
@@ -205,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    /*
     private void RequestNewGroup()
     {
         AlertDialog.Builder buider = new AlertDialog.Builder( MainActivity.this, R.style.AlertDialog);
@@ -255,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+*/
 
     private void SendUserToSettingsActivity()
     {

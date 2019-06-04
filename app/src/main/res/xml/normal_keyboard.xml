@@ -174,7 +174,7 @@
             android:codes="32"/>
 
         <Key
-            android:keyIcon="@drawable/sym_keyboard_delete"
+            android:keyIcon="@drawable/backspace_arrow_icon"
             android:keyWidth="20%p"
             android:isRepeatable="true"
             android:keyEdgeFlags="right"

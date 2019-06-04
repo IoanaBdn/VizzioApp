@@ -1,41 +1,42 @@
+
 package com.example.ioana.vizzioapp;
 
-import android.app.Activity;
-import android.inputmethodservice.Keyboard;
-import android.inputmethodservice.KeyboardView;
-import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
-import android.media.AudioManager;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.Layout;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.View.OnTouchListener;
-import android.view.WindowManager;
-import android.view.inputmethod.InputConnection;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+        import android.app.Activity;
+        import android.inputmethodservice.Keyboard;
+        import android.inputmethodservice.KeyboardView;
+        import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
+        import android.media.AudioManager;
+        import android.text.Editable;
+        import android.text.InputType;
+        import android.text.Layout;
+        import android.util.Log;
+        import android.view.KeyEvent;
+        import android.view.MotionEvent;
+        import android.view.View;
+        import android.view.View.OnClickListener;
+        import android.view.View.OnFocusChangeListener;
+        import android.view.View.OnTouchListener;
+        import android.view.WindowManager;
+        import android.view.inputmethod.InputConnection;
+        import android.view.inputmethod.InputMethodManager;
+        import android.widget.EditText;
 
-import static android.content.Context.AUDIO_SERVICE;
+        import static android.content.Context.AUDIO_SERVICE;
 
 
-class CustomKeyboard {
+class VoiceInputKeyboard2 {
 
     /** A link to the KeyboardView that is used to render this CustomKeyboard. */
     private KeyboardView mKeyboardView;
     /** A link to the activity that hosts the {@link #mKeyboardView}. */
-    private Activity     mHostActivity;
+    private Activity mHostActivity;
 
     private Keyboard mKeyboard;
 
     Boolean isCaps = false;
 
     /** The key (code) handler. */
-    private OnKeyboardActionListener mOnKeyboardActionListener = new OnKeyboardActionListener() {
+    private KeyboardView.OnKeyboardActionListener mOnKeyboardActionListener = new KeyboardView.OnKeyboardActionListener() {
 
 
         public final static int CodeVoiceKeyboard    = -4;
@@ -151,7 +152,7 @@ class CustomKeyboard {
      * @param viewid The id of the KeyboardView.
      * @param layoutid The id of the xml file containing the keyboard layout.
      */
-    public CustomKeyboard(Activity host, int viewid, int layoutid) {
+    public VoiceInputKeyboard2(Activity host, int viewid, int layoutid) {
         mHostActivity = host;
         mKeyboardView = (KeyboardView)mHostActivity.findViewById(viewid);
         mKeyboard =   new Keyboard(mHostActivity, layoutid);
@@ -189,23 +190,23 @@ class CustomKeyboard {
         // Find the EditText 'resid'
         EditText edittext= (EditText)mHostActivity.findViewById(resid);
         // Make the custom keyboard appear
-        edittext.setOnFocusChangeListener(new OnFocusChangeListener() {
+        edittext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             // NOTE By setting the on focus listener, we can show the custom keyboard when the edit box gets focus, but also hide it when the edit box loses focus
             @Override public void onFocusChange(View v, boolean hasFocus) {
                 if( hasFocus ) showCustomKeyboard(v); else hideCustomKeyboard();
             }
         });
-        edittext.setOnClickListener(new OnClickListener() {
+        edittext.setOnClickListener(new View.OnClickListener() {
             // NOTE By setting the on click listener, we can show the custom keyboard again, by tapping on an edit box that already had focus (but that had the keyboard hidden).
             @Override public void onClick(View v)
             {
 
-                    showCustomKeyboard(v);
+                showCustomKeyboard(v);
             }
         });
         // Disable standard keyboard hard way
         // NOTE There is also an easy way: 'edittext.setInputType(InputType.TYPE_NULL)' (but you will not have a cursor, and no 'edittext.setCursorVisible(true)' doesn't work )
-        edittext.setOnTouchListener(new OnTouchListener() {
+        edittext.setOnTouchListener(new View.OnTouchListener() {
             @Override public boolean onTouch(View v, MotionEvent event) {
                 EditText edittext = (EditText) v;
                 int inType = edittext.getInputType();       // Backup the input type

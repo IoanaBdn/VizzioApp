@@ -338,6 +338,14 @@ public class ChatActivity extends AppCompatActivity {
                             switch (inputMethod)
                             {
                                 case "Voice Input Keyboard":
+
+
+                                    hideSystemKeyboard();
+
+
+                                   // keyboard= new VoiceInputKeyboard(getApplicationContext(),ChatActivity.this, R.id.keyboard_voice );
+                                   // keyboard.registerEditText(R.id.input_message);
+
                                     keyboard = (VoiceInputKeyboard) findViewById(R.id.keyboard_voice);
                                     StartListeningButton = (ImageButton) findViewById(R.id.start_listen_btn);
                                     StopListeningButton = (ImageButton) findViewById(R.id.stop_listen_btn);
@@ -348,6 +356,10 @@ public class ChatActivity extends AppCompatActivity {
 
                                     hideSystemKeyboard();
 
+
+
+
+                                    /*
                                     MessageInputText.setOnTouchListener(new View.OnTouchListener()
                                     {
                                         @Override
@@ -357,14 +369,17 @@ public class ChatActivity extends AppCompatActivity {
                                             return false;
                                         }
                                     });
+                                    */
 
                                     // pass the InputConnection from the EditText to the keyboard
-                                    InputConnection ic = MessageInputText.onCreateInputConnection(new EditorInfo());
-                                    keyboard.setInputConnection(ic);
+                                   // InputConnection ic = MessageInputText.onCreateInputConnection(new EditorInfo());
+                                   // keyboard.setInputConnection(ic);
 
-                                    Toast.makeText(ChatActivity.this, "aici voice...", Toast.LENGTH_SHORT).show();
+                                    keyboard.registerEditText(R.id.input_message);
 
+                                    //Toast.makeText(ChatActivity.this, "aici voice...", Toast.LENGTH_SHORT).show();
 
+                                    /*
                                     StartListeningButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v)
@@ -396,29 +411,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
 
-                                    /*
-                                    StartListeningButton.setOnTouchListener(new View.OnTouchListener()
-                                    {
-                                        @Override
-                                        public boolean onTouch(View v, MotionEvent event)
-                                        {
-                                            switch (event.getAction())
-                                            {
-                                                case MotionEvent.ACTION_DOWN:
-                                                    MessageInputText.setHint("Listening...");
-                                                    mSpeechRecognizer.startListening(mSpeechRecognizerIntent);
-                                                    break;
-                                                case MotionEvent.ACTION_UP:
 
-                                                    MessageInputText.setHint("You will see the message here");
-                                                    mSpeechRecognizer.stopListening();
-
-                                                    break;
-                                            }
-                                            return false;
-                                        }
-                                    });
-                                   */
 
                                     StopListeningButton.setOnClickListener(new View.OnClickListener() {
                                         @Override
@@ -445,21 +438,7 @@ public class ChatActivity extends AppCompatActivity {
                                     });
 
 
-                                    /*
-                                    BackspaceButton.setOnClickListener(new View.OnClickListener()
-                                    {
-                                        @Override
-                                        public void onClick(View v)
 
-                                        {
-
-                                            int length = MessageInputText.getText().length();
-                                            if (length > 0) {
-                                                MessageInputText.getText().delete(length - 1, length);
-                                            }
-                                        }
-                                    });
-                                    */
 
 
                                     BackspaceButton.setOnTouchListener(new RepeatListener(400, 100, new View.OnClickListener() {
@@ -486,6 +465,9 @@ public class ChatActivity extends AppCompatActivity {
                                             MessageInputText.requestFocus();
                                         }
                                     });
+
+                                    */
+
                                     break;
                                 case "Normal Keyboard":
 
@@ -493,6 +475,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
                                     mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.xml.normal_keyboard );
+                                   // mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.layout.voice_input_keyboard );
 
                                     mCustomKeyboard.registerEditText(R.id.input_message);
 

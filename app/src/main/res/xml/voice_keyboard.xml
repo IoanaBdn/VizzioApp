@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:keyWidth="10%p"
+    android:horizontalGap="0px"
+    android:verticalGap="0px"
+    android:keyHeight="60dp"
+    >
+    <Row>
+            <ImageButton
+                android:id="@+id/keyboard_btn"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/keyboard_icon"
+                android:background="@drawable/round_shape"
+                android:textColor="#f8fdf9"
+                />
+
+
+
+            <ImageButton
+                android:id="@+id/start_listen_btn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+
+
+                android:background="@drawable/round_shape"
+                android:src="@drawable/microphone_icon"
+                android:textColor="#f8fdf9"
+                />
+
+            <ImageButton
+                android:id="@+id/stop_listen_btn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+
+
+                android:background="@drawable/round_shape"
+                android:textColor="#f8fdf9"
+                android:visibility="gone"
+                />
+
+            <ImageButton
+                android:id="@+id/backspace_btn"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/backspace_icon"
+
+                android:background="@drawable/round_shape"
+                android:textColor="#f8fdf9"
+                />
+
+
+
+
+
+
+</Row>
+</Keyboard>

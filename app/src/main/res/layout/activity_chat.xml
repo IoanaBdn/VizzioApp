@@ -83,6 +83,15 @@
             android:keyPreviewLayout="@xml/key_preview"
             android:background="@color/keyboard_background_color"
             android:visibility="gone" />
+
+        <com.example.ioana.vizzioapp.BrailleKeyboard
+            android:id="@+id/keyboard_braille"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chat_line_layout"
+            android:orientation="vertical"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 
 

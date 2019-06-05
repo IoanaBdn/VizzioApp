@@ -332,6 +332,10 @@ public class VoiceInputKeyboard  extends LinearLayout implements View.OnClickLis
         this.setEnabled(false);
     }
 
+    /** Returns whether the CustomKeyboard is visible. */
+    public boolean isCustomKeyboardVisible() {
+        return this.getVisibility() == View.VISIBLE;
+    }
 
     // The activity (or some parent or controller) must give us
     // a reference to the current EditText's InputConnection

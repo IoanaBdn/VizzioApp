@@ -76,9 +76,11 @@ public class ChatActivity extends AppCompatActivity {
     private SpeechRecognizerManager mSpeechManager;
 
     //voice keyboard
-    private VoiceInputKeyboard keyboard ;
+    private VoiceInputKeyboard voiceKeyboard ;
     //normal keyboard
     private CustomKeyboard mCustomKeyboard;
+    //braille keyboard
+    private BrailleKeyboard brailleKeyboard;
   
     private ImageButton StartListeningButton;
     private ImageButton StopListeningButton;
@@ -340,17 +342,16 @@ public class ChatActivity extends AppCompatActivity {
                                 case "Voice Input Keyboard":
 
 
-                                    hideSystemKeyboard();
 
 
                                    // keyboard= new VoiceInputKeyboard(getApplicationContext(),ChatActivity.this, R.id.keyboard_voice );
                                    // keyboard.registerEditText(R.id.input_message);
 
-                                    keyboard = (VoiceInputKeyboard) findViewById(R.id.keyboard_voice);
-                                    StartListeningButton = (ImageButton) findViewById(R.id.start_listen_btn);
-                                    StopListeningButton = (ImageButton) findViewById(R.id.stop_listen_btn);
-                                    BackspaceButton = (ImageButton) findViewById(R.id.backspace_btn);
-                                    KeyboardButton = (ImageButton) findViewById(R.id.keyboard_btn);
+                                    voiceKeyboard = (VoiceInputKeyboard) findViewById(R.id.keyboard_voice);
+                                    //StartListeningButton = (ImageButton) findViewById(R.id.start_listen_btn);
+                                   // StopListeningButton = (ImageButton) findViewById(R.id.stop_listen_btn);
+                                    //BackspaceButton = (ImageButton) findViewById(R.id.backspace_btn);
+                                   // KeyboardButton = (ImageButton) findViewById(R.id.keyboard_btn);
 
 
 
@@ -375,7 +376,7 @@ public class ChatActivity extends AppCompatActivity {
                                    // InputConnection ic = MessageInputText.onCreateInputConnection(new EditorInfo());
                                    // keyboard.setInputConnection(ic);
 
-                                    keyboard.registerEditText(R.id.input_message);
+                                    voiceKeyboard.registerEditText(R.id.input_message);
 
                                     //Toast.makeText(ChatActivity.this, "aici voice...", Toast.LENGTH_SHORT).show();
 
@@ -481,6 +482,12 @@ public class ChatActivity extends AppCompatActivity {
 
 
                                     break;
+                                case "Braille Keyboard":
+                                    hideSystemKeyboard();
+                                    brailleKeyboard = (BrailleKeyboard) findViewById(R.id.keyboard_braille);
+                                    brailleKeyboard.registerEditText(R.id.input_message);
+
+                                    break;
                                 default: break;
                             }
 
@@ -502,8 +509,15 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    @Override public void onBackPressed() {
-        if( mCustomKeyboard.isCustomKeyboardVisible() ) mCustomKeyboard.hideCustomKeyboard(); else this.finish();
+    @Override public void onBackPressed()
+    {
+        if(mCustomKeyboard!=null)
+            if( mCustomKeyboard.isCustomKeyboardVisible() ) mCustomKeyboard.hideCustomKeyboard(); else this.finish();
+        if(voiceKeyboard!=null)
+            if( voiceKeyboard.isCustomKeyboardVisible() ) voiceKeyboard.hideCustomKeyboard(); else this.finish();
+        if(brailleKeyboard!=null)
+            if( brailleKeyboard.isCustomKeyboardVisible() ) brailleKeyboard.hideCustomKeyboard(); else this.finish();
+
     }
 
     public void hideSystemKeyboard()

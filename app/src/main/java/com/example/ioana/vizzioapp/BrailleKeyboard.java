@@ -7,6 +7,7 @@ import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import java.math.BigInteger;
 
 public class BrailleKeyboard extends LinearLayout implements View.OnClickListener
 {
@@ -93,6 +96,7 @@ public class BrailleKeyboard extends LinearLayout implements View.OnClickListene
 
     public void registerEditText(int resid)
     {
+
         mMessageInputId= resid;
 
         // Find the EditText 'resid'
@@ -109,6 +113,10 @@ public class BrailleKeyboard extends LinearLayout implements View.OnClickListene
             @Override public void onClick(View v)
             {
                 showCustomKeyboard(v);
+                String binaryString = "01100001";
+                String hexString = new BigInteger(binaryString, 2).toString(16);
+                Log.d("BYTES","hex:"+hexString);
+
             }
         });
         // Disable standard keyboard hard way

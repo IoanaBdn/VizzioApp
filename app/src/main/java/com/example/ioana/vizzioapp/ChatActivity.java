@@ -475,7 +475,7 @@ public class ChatActivity extends AppCompatActivity {
                                     hideSystemKeyboard();
 
 
-                                    mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.xml.normal_keyboard );
+                                    mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.xml.normal_keyboard, R.id.keyboard_voice);
                                    // mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.layout.voice_input_keyboard );
 
                                     mCustomKeyboard.registerEditText(R.id.input_message);

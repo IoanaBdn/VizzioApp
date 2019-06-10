@@ -181,7 +181,7 @@ public class VoiceInputKeyboard  extends LinearLayout implements View.OnClickLis
                 this.setVisibility(View.GONE);
 
                 CustomKeyboard mCustomKeyboard;
-                mCustomKeyboard= new CustomKeyboard(mHostActivity, R.id.keyboardview, R.xml.normal_keyboard );
+                mCustomKeyboard= new CustomKeyboard(mHostActivity, R.id.keyboardview, R.xml.normal_keyboard, R.id.keyboard_voice );
 
                 mCustomKeyboard.registerEditText(mMessageInputId);
 

@@ -32,6 +32,9 @@ class CustomKeyboard {
 
     private Keyboard mKeyboard;
 
+    //voice keyboard
+    private VoiceInputKeyboard voiceKeyboard ;
+
     Boolean isCaps = false;
 
     /** The key (code) handler. */
@@ -71,7 +74,15 @@ class CustomKeyboard {
                     break;
 
                 case CodeVoiceKeyboard:
-                    editable.insert(start, String.valueOf(109));
+                    //editable.insert(start, String.valueOf(109));
+                    int inputId = edittext.getId();
+                    //voiceKeyboard.registerEditText(R.id.input_message);
+                    hideCustomKeyboard();
+                    voiceKeyboard.registerEditText(inputId);
+                    View rootView = mHostActivity.getWindow().getDecorView().findViewById(android.R.id.content);
+
+                    voiceKeyboard.showCustomKeyboard(rootView);
+
                     break;
 
                     /*
@@ -151,9 +162,12 @@ class CustomKeyboard {
      * @param viewid The id of the KeyboardView.
      * @param layoutid The id of the xml file containing the keyboard layout.
      */
-    public CustomKeyboard(Activity host, int viewid, int layoutid) {
+    public CustomKeyboard(Activity host, int viewid, int layoutid, int kVoiceLayoutId) {
         mHostActivity = host;
         mKeyboardView = (KeyboardView)mHostActivity.findViewById(viewid);
+
+        voiceKeyboard = (VoiceInputKeyboard) mHostActivity.findViewById(kVoiceLayoutId);
+
         mKeyboard =   new Keyboard(mHostActivity, layoutid);
         mKeyboardView.setKeyboard(mKeyboard);
         mKeyboardView.setPreviewEnabled(false); // NOTE Do not show the preview balloons

@@ -96,13 +96,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        //adjustFontScale( getResources().getConfiguration(), (float) 1.5);
-
-        int arg1 = 100;
-        adjustScreenBrightness(arg1);
-        int arg2 = 100;
-
-        //adjustScreenContrast(arg2);
+        UserPreferencesManager.initializePreferences(this);
 
 
         setContentView(R.layout.activity_chat);
@@ -204,50 +198,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-
-
-    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!/////
-
-
-    public  void adjustFontScale(Configuration configuration, float scale) {
-
-        configuration.fontScale = scale;
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        wm.getDefaultDisplay().getMetrics(metrics);
-        metrics.scaledDensity = configuration.fontScale * metrics.density;
-        getBaseContext().getResources().updateConfiguration(configuration, metrics);
-
-    }
-
-
-    private void adjustScreenContrast(int value)
-    {
-        float BackLightValue = (float)value/100;
-       // float BackLightValue = (float)value;
-
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
-        //layoutParams.screenBrightness = BackLightValue; // Set Value
-        layoutParams.alpha = (float)0.2; // Set Value
-
-
-        getWindow().setAttributes(layoutParams); // Set params
-
-    }
-
-    private void adjustScreenBrightness(int value)
-    {
-        float BackLightValue = (float)value/100;
-
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes(); // Get Params
-        layoutParams.screenBrightness = BackLightValue; // Set Value
-
-        getWindow().setAttributes(layoutParams); // Set params
-
-    }
-
-
-    ////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!/////
 
 
     private void InitializeControllers()

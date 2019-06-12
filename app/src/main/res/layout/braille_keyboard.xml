@@ -17,6 +17,7 @@
         >
 
         <TextView
+            android:id="@+id/txt_dot_1"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textStyle="bold"
@@ -39,6 +40,8 @@
         >
 
         <TextView
+            android:id="@+id/txt_dot_2"
+
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textStyle="bold"
@@ -61,6 +64,8 @@
         >
 
         <TextView
+            android:id="@+id/txt_dot_3"
+
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textStyle="bold"
@@ -85,6 +90,7 @@
         >
 
         <TextView
+            android:id="@+id/txt_dot_4"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textStyle="bold"
@@ -108,6 +114,7 @@
         >
 
         <TextView
+            android:id="@+id/txt_dot_5"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textStyle="bold"
@@ -129,6 +136,7 @@
         >
 
         <TextView
+            android:id="@+id/txt_dot_6"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:textStyle="bold"

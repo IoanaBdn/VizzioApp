@@ -22,9 +22,13 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListener
 {
@@ -46,6 +50,9 @@ public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListe
    // GestureDetector gestureDetector;
 //
 
+
+    ArrayList<Integer> selectedPatternArrayList = new ArrayList<>();
+    Set<Integer> selectedPattern = new HashSet(selectedPatternArrayList);
     ///////////////////////////////////////////////////
     ///////////////////////////////////////////////////
 
@@ -83,6 +90,13 @@ public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListe
     private Button btn_5;
     private Button btn_6;
 
+    private TextView txt_dot1;
+    private TextView txt_dot2;
+    private TextView txt_dot3;
+    private TextView txt_dot4;
+    private TextView txt_dot5;
+    private TextView txt_dot6;
+
     private RelativeLayout dot_1;
     private RelativeLayout dot_2;
     private RelativeLayout dot_3;
@@ -111,6 +125,13 @@ public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListe
         dot_4 = (RelativeLayout) findViewById(R.id.dot_4);
         dot_5 = (RelativeLayout) findViewById(R.id.dot_5);
         dot_6 = (RelativeLayout) findViewById(R.id.dot_6);
+
+        txt_dot1 = (TextView) findViewById(R.id.txt_dot_1);
+        txt_dot2 = (TextView) findViewById(R.id.txt_dot_2);
+        txt_dot3 = (TextView) findViewById(R.id.txt_dot_3);
+        txt_dot4 = (TextView) findViewById(R.id.txt_dot_4);
+        txt_dot5 = (TextView) findViewById(R.id.txt_dot_5);
+        txt_dot6 = (TextView) findViewById(R.id.txt_dot_6);
 
         /*
         btn_1 = (Button) findViewById(R.id.btn_1);
@@ -321,11 +342,9 @@ public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListe
     {
         try
         {
-        Toast.makeText(mHostActivity,"event X:" + event.getX()+"btn 1 x: "+dot_1.getX(), Toast.LENGTH_SHORT).show();
 
         int action = event.getActionMasked();
         int pointerCount = event.getPointerCount();
-
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
@@ -340,40 +359,64 @@ public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListe
 
                 if (isDownDot1Selected)
                 {
-                    Toast.makeText(mHostActivity,"Atins btn 1", Toast.LENGTH_SHORT).show();
                     isInsideBrailleDot = true;
+                    selectedPattern.add(1);
+
+                    Toast.makeText(mHostActivity,"Hover enter 1", Toast.LENGTH_SHORT).show();
+                    txt_dot1.setTextColor(Color.RED);
+
                     vibrator.vibrate(100);
                 }
 
                 if (isDownDot2Selected)
                 {
-                    Toast.makeText(mHostActivity,"Atins btn 2", Toast.LENGTH_SHORT).show();
                     isInsideBrailleDot = true;
+                    selectedPattern.add(2);
+
+                    Toast.makeText(mHostActivity,"Hover enter 2", Toast.LENGTH_SHORT).show();
+                    txt_dot2.setTextColor(Color.RED);
+
                     vibrator.vibrate(100);
 
                 }
                 if (isDownDot3Selected)
                 {
-                    Toast.makeText(mHostActivity,"Atins btn 3", Toast.LENGTH_SHORT).show();
                     isInsideBrailleDot = true;
+                    selectedPattern.add(3);
+
+                    Toast.makeText(mHostActivity,"Hover enter 3", Toast.LENGTH_SHORT).show();
+                    txt_dot3.setTextColor(Color.RED);
+
                     vibrator.vibrate(100);
                 }
                 if (isDownDot4Selected)
                 {
-                    Toast.makeText(mHostActivity,"Atins btn 4", Toast.LENGTH_SHORT).show();
                     isInsideBrailleDot = true;
+                    selectedPattern.add(4);
+
+                    Toast.makeText(mHostActivity,"Hover enter 4", Toast.LENGTH_SHORT).show();
+                    txt_dot4.setTextColor(Color.RED);
+
                     vibrator.vibrate(100);
                 }
                 if (isDownDot5Selected)
                 {
-                    Toast.makeText(mHostActivity,"Atins btn 5", Toast.LENGTH_SHORT).show();
                     isInsideBrailleDot = true;
+                    selectedPattern.add(5);
+
+                    Toast.makeText(mHostActivity,"Hover enter 5", Toast.LENGTH_SHORT).show();
+                    txt_dot5.setTextColor(Color.RED);
+
                     vibrator.vibrate(100);
                 }
                 if (isDownDot6Selected)
                 {
-                    Toast.makeText(mHostActivity,"Atins btn 6", Toast.LENGTH_SHORT).show();
                     isInsideBrailleDot = true;
+                    selectedPattern.add(6);
+
+                    Toast.makeText(mHostActivity,"Hover enter 6", Toast.LENGTH_SHORT).show();
+                    txt_dot6.setTextColor(Color.RED);
+
                     vibrator.vibrate(100);
                 }
 
@@ -391,20 +434,62 @@ public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListe
 
                     if (isPointerDownDot1Selected)
                     {
-                        Toast.makeText(mHostActivity,"Atins btn 1", Toast.LENGTH_SHORT).show();
                         isInsideBrailleDot = true;
+                        selectedPattern.add(1);
+
+                        Toast.makeText(mHostActivity,"Pointer down 1", Toast.LENGTH_SHORT).show();
+                        txt_dot1.setTextColor(Color.BLUE);
+
                         vibrator.vibrate(100);
                     }
                     if (isPointerDownDot2Selected)
                     {
-                        Toast.makeText(mHostActivity,"Atins btn 2", Toast.LENGTH_SHORT).show();
                         isInsideBrailleDot = true;
+                        selectedPattern.add(2);
+
+                        Toast.makeText(mHostActivity,"Pointer down 2", Toast.LENGTH_SHORT).show();
+                        txt_dot2.setTextColor(Color.BLUE);
+
                         vibrator.vibrate(100);
                     }
                     if (isPointerDownDot3Selected)
                     {
-                        Toast.makeText(mHostActivity,"Atins btn 3", Toast.LENGTH_SHORT).show();
                         isInsideBrailleDot = true;
+                        selectedPattern.add(3);
+
+                        Toast.makeText(mHostActivity,"Pointer down 3", Toast.LENGTH_SHORT).show();
+                        txt_dot3.setTextColor(Color.BLUE);
+
+                        vibrator.vibrate(100);
+                    }
+                    if (isPointerDownDot4Selected)
+                    {
+                        isInsideBrailleDot = true;
+                        selectedPattern.add(4);
+
+                        Toast.makeText(mHostActivity,"Pointer down 4", Toast.LENGTH_SHORT).show();
+                        txt_dot4.setTextColor(Color.BLUE);
+
+                        vibrator.vibrate(100);
+                    }
+                    if (isPointerDownDot5Selected)
+                    {
+                        isInsideBrailleDot = true;
+                        selectedPattern.add(5);
+
+                        Toast.makeText(mHostActivity,"Pointer down 5", Toast.LENGTH_SHORT).show();
+                        txt_dot5.setTextColor(Color.BLUE);
+
+                        vibrator.vibrate(100);
+                    }
+                    if (isPointerDownDot6Selected)
+                    {
+                        isInsideBrailleDot = true;
+                        selectedPattern.add(6);
+
+                        Toast.makeText(mHostActivity,"Pointer down 6", Toast.LENGTH_SHORT).show();
+                        txt_dot6.setTextColor(Color.BLUE);
+
                         vibrator.vibrate(100);
                     }
 
@@ -423,23 +508,106 @@ public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListe
                     boolean isMovePointerDot6Selected = (event.getX(pointers) - (dot_6.getX() + brailleDotRadius)) * (event.getX(pointers) - (dot_6.getX() + brailleDotRadius)) + (event.getY(pointers) - (dot_6.getY() + brailleDotRadius)) * (event.getY(pointers) - (dot_6.getY() + brailleDotRadius)) <= brailleDotRadiusDoubled;
                     if (isMovePointerDot1Selected)
                     {
-                        Toast.makeText(mHostActivity," 1", Toast.LENGTH_SHORT).show();
                         isInsideBrailleDot = true;
+                        selectedPattern.add(1);
+                        Toast.makeText(mHostActivity,"Hover 1", Toast.LENGTH_SHORT).show();
+                        txt_dot1.setTextColor(Color.GREEN);
+
                         vibrator.vibrate(20);
                     }
                     if (isMovePointerDot2Selected)
                     {
-                        Toast.makeText(mHostActivity,"2", Toast.LENGTH_SHORT).show();
                         isInsideBrailleDot = true;
+                        selectedPattern.add(2);
+
+                        Toast.makeText(mHostActivity,"Hover 2", Toast.LENGTH_SHORT).show();
+                        txt_dot2.setTextColor(Color.GREEN);
+
                         vibrator.vibrate(20);
                     }
                     if (isMovePointerDot3Selected)
                     {
-                        Toast.makeText(mHostActivity,"3", Toast.LENGTH_SHORT).show();
                         isInsideBrailleDot = true;
+                        selectedPattern.add(3);
+
+                        Toast.makeText(mHostActivity,"Hover 3", Toast.LENGTH_SHORT).show();
+                        txt_dot3.setTextColor(Color.GREEN);
+
+                        vibrator.vibrate(20);
+                    }
+                    if (isMovePointerDot4Selected)
+                    {
+                        isInsideBrailleDot = true;
+                        selectedPattern.add(4);
+
+                        Toast.makeText(mHostActivity,"Hover 4", Toast.LENGTH_SHORT).show();
+                        txt_dot4.setTextColor(Color.GREEN);
+
+                        vibrator.vibrate(20);
+                    }
+                    if (isMovePointerDot5Selected)
+                    {
+                        isInsideBrailleDot = true;
+                        selectedPattern.add(5);
+
+                        Toast.makeText(mHostActivity,"Hover 5", Toast.LENGTH_SHORT).show();
+                        txt_dot5.setTextColor(Color.GREEN);
+
+                        vibrator.vibrate(20);
+                    }
+                    if (isMovePointerDot6Selected)
+                    {
+                        isInsideBrailleDot = true;
+                        selectedPattern.add(6);
+
+                        Toast.makeText(mHostActivity,"Hover 6", Toast.LENGTH_SHORT).show();
+                        txt_dot6.setTextColor(Color.GREEN);
+
                         vibrator.vibrate(20);
                     }
                 }
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                isPointersFingersUp = true;
+                for (int pointers = 1; pointers < pointerCount; pointers++) {
+                    boolean isPointerUpDot1Selected = (event.getX(pointers) - (dot_1.getX() + brailleDotRadius)) * (event.getX(pointers) - (dot_1.getX() + brailleDotRadius)) + (event.getY(pointers) - (dot_1.getY() + brailleDotRadius)) * (event.getY(pointers) - (dot_1.getY() + brailleDotRadius)) <= brailleDotRadiusDoubled;
+                    boolean isPointerUpDot2Selected = (event.getX(pointers) - (dot_2.getX() + brailleDotRadius)) * (event.getX(pointers) - (dot_2.getX() + brailleDotRadius)) + (event.getY(pointers) - (dot_2.getY() + brailleDotRadius)) * (event.getY(pointers) - (dot_2.getY() + brailleDotRadius)) <= brailleDotRadiusDoubled;
+                    boolean isPointerUpDot3Selected = (event.getX(pointers) - (dot_3.getX() + brailleDotRadius)) * (event.getX(pointers) - (dot_3.getX() + brailleDotRadius)) + (event.getY(pointers) - (dot_3.getY() + brailleDotRadius)) * (event.getY(pointers) - (dot_3.getY() + brailleDotRadius)) <= brailleDotRadiusDoubled;
+                    boolean isPointerUpDot4Selected = (event.getX(pointers) - (dot_4.getX() + brailleDotRadius)) * (event.getX(pointers) - (dot_4.getX() + brailleDotRadius)) + (event.getY(pointers) - (dot_4.getY() + brailleDotRadius)) * (event.getY(pointers) - (dot_4.getY() + brailleDotRadius)) <= brailleDotRadiusDoubled;
+                    boolean isPointerUpDot5Selected = (event.getX(pointers) - (dot_5.getX() + brailleDotRadius)) * (event.getX(pointers) - (dot_5.getX() + brailleDotRadius)) + (event.getY(pointers) - (dot_5.getY() + brailleDotRadius)) * (event.getY(pointers) - (dot_5.getY() + brailleDotRadius)) <= brailleDotRadiusDoubled;
+                    boolean isPointerUpDot6Selected = (event.getX(pointers) - (dot_6.getX() + brailleDotRadius)) * (event.getX(pointers) - (dot_6.getX() + brailleDotRadius)) + (event.getY(pointers) - (dot_6.getY() + brailleDotRadius)) * (event.getY(pointers) - (dot_6.getY() + brailleDotRadius)) <= brailleDotRadiusDoubled;
+
+                    if (isPointerUpDot1Selected) {
+                        selectedPattern.add(1);
+                    }
+
+                    if (isPointerUpDot2Selected) {
+                        selectedPattern.add(2);
+                    }
+
+                    if (isPointerUpDot3Selected) {
+                        selectedPattern.add(3);
+                    }
+
+                    if (isPointerUpDot4Selected) {
+                        selectedPattern.add(4);
+                    }
+
+                    if (isPointerUpDot5Selected) {
+                        selectedPattern.add(5);
+                    }
+
+                    if (isPointerUpDot6Selected) {
+                        selectedPattern.add(6);
+                    }
+
+                    //Send patterns when all fingers up
+                    sendPatterns();
+                    //Clear pattern
+                    selectedPattern.clear();
+                }
+
+                    Toast.makeText(mHostActivity,"Se fini la comedi", Toast.LENGTH_SHORT).show();
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_OUTSIDE:
@@ -457,26 +625,53 @@ public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListe
                 boolean isUpDot5Selected = (event.getX() - (dot_5.getX() + brailleDotRadius)) * (event.getX() - (dot_5.getX() + brailleDotRadius)) + (event.getY() - (dot_5.getY() + brailleDotRadius)) * (event.getY() - (dot_5.getY() + brailleDotRadius)) <= brailleDotRadiusDoubled;
                 boolean isUpDot6Selected = (event.getX() - (dot_6.getX() + brailleDotRadius)) * (event.getX() - (dot_6.getX() + brailleDotRadius)) + (event.getY() - (dot_6.getY() + brailleDotRadius)) * (event.getY() - (dot_6.getY() + brailleDotRadius)) <= brailleDotRadiusDoubled;
 
-
                 if (isUpDot1Selected)
                 {
-                    Toast.makeText(mHostActivity," 1", Toast.LENGTH_SHORT).show();
-                    isInsideBrailleDot = true;
-                    vibrator.vibrate(100);
-                }
-                if (isUpDot2Selected)
-                {
-                    Toast.makeText(mHostActivity," 2", Toast.LENGTH_SHORT).show();
-                    isInsideBrailleDot = true;
-                    vibrator.vibrate(100);
-                }
-                if (isUpDot3Selected)
-                {
-                    Toast.makeText(mHostActivity," 3", Toast.LENGTH_SHORT).show();
-                    isInsideBrailleDot = true;
+                    selectedPattern.add(1);
+
                     vibrator.vibrate(100);
                 }
 
+                if (isUpDot2Selected)
+                {
+                    selectedPattern.add(2);
+
+                    vibrator.vibrate(100);
+                }
+
+                if (isUpDot3Selected)
+                {
+                    selectedPattern.add(3);
+
+                    vibrator.vibrate(100);
+                }
+
+                if (isUpDot4Selected)
+                {
+                    selectedPattern.add(4);
+
+                    vibrator.vibrate(100);
+                }
+
+                if (isUpDot5Selected)
+                {
+                    selectedPattern.add(5);
+
+                    vibrator.vibrate(100);
+                }
+
+                if (isUpDot6Selected)
+                {
+                    selectedPattern.add(6);
+
+                    vibrator.vibrate(100);
+                }
+
+
+                //Send patterns when all fingers up
+                sendPatterns();
+                //Clear pattern
+                selectedPattern.clear();
                 break;
         }
 
@@ -488,6 +683,19 @@ public class BrailleKeyboard extends RelativeLayout implements View.OnTouchListe
 
 
 
+    //--------------------------------------------------------------------------------------------//
+    //Send patterns when all fingers up
+    private void sendPatterns() {
+        if (isMainFingerUp && isPointersFingersUp)
+        {
+
+            Toast.makeText(mHostActivity, "SEnd Patern"+selectedPattern.toString(), Toast.LENGTH_SHORT).show();
+            //Clear the last up
+            ///////selectedPatternHandler.removeCallbacks(selectedPatternRunnable);
+            //Send the selected pattern
+           /////// selectedPatternHandler.postDelayed(selectedPatternRunnable, selectedDotsPeriod);
+        }
+    }
 
 
 

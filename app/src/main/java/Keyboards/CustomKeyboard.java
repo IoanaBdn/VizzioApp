@@ -1,4 +1,4 @@
-package com.example.ioana.vizzioapp;
+package Keyboards;
 
 import android.app.Activity;
 import android.inputmethodservice.Keyboard;
@@ -7,23 +7,21 @@ import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.media.AudioManager;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.Layout;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
-import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
+import Keyboards.VoiceInputKeyboard;
 
 import static android.content.Context.AUDIO_SERVICE;
 
 
-class CustomKeyboard {
+public class CustomKeyboard {
 
     /** A link to the KeyboardView that is used to render this CustomKeyboard. */
     private KeyboardView mKeyboardView;

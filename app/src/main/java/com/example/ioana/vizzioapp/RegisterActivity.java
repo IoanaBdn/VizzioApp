@@ -29,6 +29,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private FirebaseAuth mAuth;
+
+
     private DatabaseReference RootRef;
 
     private Toolbar mToolbar;
@@ -43,7 +45,11 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         //
+
+
         mAuth = FirebaseAuth.getInstance();
+
+
         RootRef = FirebaseDatabase.getInstance().getReference();
 
 
@@ -89,7 +95,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
             mAuth.createUserWithEmailAndPassword(email,password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>()
+                    {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task)
                         {
@@ -99,7 +106,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 RootRef.child("Users").child(currentUserID).setValue("");
 
                                 SendUserToMainActivity();
-                                Toast.makeText(RegisterActivity.this, "Account cerated successfully", Toast.LENGTH_SHORT);
+                                Toast.makeText(RegisterActivity.this, "Account created successfully", Toast.LENGTH_SHORT);
                                 loadingBar.dismiss();
                             }
                             else

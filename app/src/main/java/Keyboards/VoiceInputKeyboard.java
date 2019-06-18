@@ -1,26 +1,24 @@
-package com.example.ioana.vizzioapp;
+package Keyboards;
 
 import android.app.Activity;
 import android.content.Context;
-import android.inputmethodservice.Keyboard;
-import android.inputmethodservice.KeyboardView;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.example.ioana.vizzioapp.PermissionHandler;
+import com.example.ioana.vizzioapp.R;
+import com.example.ioana.vizzioapp.SpeechRecognizerManager;
 
 import java.util.ArrayList;
 
@@ -111,47 +109,7 @@ public class VoiceInputKeyboard  extends LinearLayout implements View.OnClickLis
         backspaceButton.setOnClickListener(this);
 
 
-        /*
-        mButton1 = (Button) findViewById(R.id.button_1);
-        mButton2 = (Button) findViewById(R.id.button_2);
-        mButton3 = (Button) findViewById(R.id.button_3);
-        mButton4 = (Button) findViewById(R.id.button_4);
-        mButton5 = (Button) findViewById(R.id.button_5);
-        mButton6 = (Button) findViewById(R.id.button_6);
-        mButton7 = (Button) findViewById(R.id.button_7);
-        mButton8 = (Button) findViewById(R.id.button_8);
-        mButton9 = (Button) findViewById(R.id.button_9);
-        mButton0 = (Button) findViewById(R.id.button_0);
-        mButtonDelete = (Button) findViewById(R.id.button_delete);
-        mButtonEnter = (Button) findViewById(R.id.button_enter);
 
-        // set button click listeners
-        mButton1.setOnClickListener(this);
-        mButton2.setOnClickListener(this);
-        mButton3.setOnClickListener(this);
-        mButton4.setOnClickListener(this);
-        mButton5.setOnClickListener(this);
-        mButton6.setOnClickListener(this);
-        mButton7.setOnClickListener(this);
-        mButton8.setOnClickListener(this);
-        mButton9.setOnClickListener(this);
-        mButton0.setOnClickListener(this);
-        mButtonDelete.setOnClickListener(this);
-        mButtonEnter.setOnClickListener(this);
-
-        // map buttons IDs to input strings
-        keyValues.put(R.id.button_1, "1");
-        keyValues.put(R.id.button_2, "2");
-        keyValues.put(R.id.button_3, "3");
-        keyValues.put(R.id.button_4, "4");
-        keyValues.put(R.id.button_5, "5");
-        keyValues.put(R.id.button_6, "6");
-        keyValues.put(R.id.button_7, "7");
-        keyValues.put(R.id.button_8, "8");
-        keyValues.put(R.id.button_9, "9");
-        keyValues.put(R.id.button_0, "0");
-        keyValues.put(R.id.button_enter, "\n");
-        */
     }
 
     @Override

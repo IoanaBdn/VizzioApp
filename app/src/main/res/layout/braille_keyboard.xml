@@ -7,236 +7,267 @@
     android:layout_width="match_parent"
     >
 
-
     <RelativeLayout
-        android:id="@+id/dot_1"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:layout_margin="30sp"
-        >
+        android:id="@+id/layout_dots"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/dot_1"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_margin="30sp"
+            android:background="@drawable/round_shape">
+
+            <TextView
+                android:id="@+id/txt_dot_1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="1"
+                android:textColor="@color/colorPrimaryBright"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/dot_2"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_below="@id/dot_1"
+            android:layout_margin="30sp"
+            android:background="@drawable/round_shape">
+
+            <TextView
+                android:id="@+id/txt_dot_2"
+
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="2"
+                android:textColor="@color/colorPrimaryBright"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/dot_3"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_below="@id/dot_2"
+            android:layout_margin="30sp"
+            android:background="@drawable/round_shape">
+
+            <TextView
+                android:id="@+id/txt_dot_3"
+
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="3"
+                android:textColor="@color/colorPrimaryBright"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/dot_4"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="30sp"
+            android:background="@drawable/round_shape">
+
+            <TextView
+                android:id="@+id/txt_dot_4"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="4"
+                android:textColor="@color/colorPrimaryBright"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/dot_5"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_below="@id/dot_4"
+            android:layout_alignParentRight="true"
+            android:layout_margin="30sp"
+            android:background="@drawable/round_shape">
+
+            <TextView
+                android:id="@+id/txt_dot_5"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="5"
+                android:textColor="@color/colorPrimaryBright"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/dot_6"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_below="@id/dot_5"
+            android:layout_alignParentRight="true"
+            android:layout_margin="30sp"
+            android:background="@drawable/round_shape">
+
+            <TextView
+                android:id="@+id/txt_dot_6"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:text="6"
+                android:textColor="@color/colorPrimaryBright"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_below="@id/layout_dots"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/caps_button"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:src="@drawable/caps_lock_big"
+            android:background="@color/colorPrimary"
+
+            android:layout_weight="0.493"
+            />
 
         <TextView
-            android:id="@+id/txt_dot_1"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textStyle="bold"
-            android:textSize="40sp"
-            android:textColor="@color/colorPrimaryBright"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.003"/>
+
+        <ImageButton
+            android:id="@+id/numeric_button"
+            android:layout_width="0dp"
+
+            android:layout_height="45dp"
+            android:src="@drawable/numbers"
+            android:background="@color/colorPrimary"
+
+            android:layout_weight="0.493"
+            />
+
+    </LinearLayout>
+
+
+
+
+    <!--
+        <Button
+            android:id="@+id/btn_1"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/round_shape"
             android:text="1"
-            android:gravity="center"
+            android:textSize="40sp"
+            android:textColor="#f8fdf9"
+            android:tag="x"
+            android:layout_margin="30sp"
             />
 
-    </RelativeLayout>
 
-
-    <RelativeLayout
-        android:id="@+id/dot_2"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:layout_margin="30sp"
-        android:layout_below="@id/dot_1"
-        >
-
-        <TextView
-            android:id="@+id/txt_dot_2"
-
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textStyle="bold"
-            android:textSize="40sp"
-            android:textColor="@color/colorPrimaryBright"
+        <Button
+            android:id="@+id/btn_2"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/round_shape"
             android:text="2"
-            android:gravity="center"
+            android:textSize="40sp"
+            android:textColor="#f8fdf9"
+            android:tag="x"
+            android:layout_margin="30sp"
+            android:layout_below="@+id/btn_1"
             />
 
-    </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/dot_3"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:layout_margin="30sp"
-        android:layout_below="@id/dot_2"
-        >
-
-        <TextView
-            android:id="@+id/txt_dot_3"
-
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textStyle="bold"
-            android:textSize="40sp"
-            android:textColor="@color/colorPrimaryBright"
+        <Button
+            android:id="@+id/btn_3"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/round_shape"
             android:text="3"
-            android:gravity="center"
+            android:textSize="40sp"
+            android:textColor="#f8fdf9"
+            android:tag="x"
+            android:layout_margin="30sp"
+            android:layout_below="@+id/btn_2"
             />
 
-    </RelativeLayout>
 
-
-
-
-    <RelativeLayout
-        android:id="@+id/dot_4"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:layout_margin="30sp"
-        android:layout_alignParentRight="true"
-        >
-
-        <TextView
-            android:id="@+id/txt_dot_4"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textStyle="bold"
-            android:textSize="40sp"
-            android:textColor="@color/colorPrimaryBright"
+        <Button
+            android:id="@+id/btn_4"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/round_shape"
             android:text="4"
-            android:gravity="center"
+            android:textSize="40sp"
+            android:textColor="#f8fdf9"
+            android:tag="x"
+            android:layout_margin="30sp"
+            android:layout_alignParentRight="true"
             />
 
-    </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/dot_5"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:layout_margin="30sp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/dot_4"
-        >
-
-        <TextView
-            android:id="@+id/txt_dot_5"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textStyle="bold"
-            android:textSize="40sp"
-            android:textColor="@color/colorPrimaryBright"
+        <Button
+            android:id="@+id/btn_5"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/round_shape"
             android:text="5"
-            android:gravity="center"
-            />
-
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/dot_6"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:layout_margin="30sp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/dot_5"
-        >
-
-        <TextView
-            android:id="@+id/txt_dot_6"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textStyle="bold"
             android:textSize="40sp"
-            android:textColor="@color/colorPrimaryBright"
-            android:text="6"
-            android:gravity="center"
+            android:textColor="#f8fdf9"
+            android:tag="x"
+            android:layout_margin="30sp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/btn_4"
             />
 
-    </RelativeLayout>
-
-<!--
-    <Button
-        android:id="@+id/btn_1"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:text="1"
-        android:textSize="40sp"
-        android:textColor="#f8fdf9"
-        android:tag="x"
-        android:layout_margin="30sp"
-        />
 
 
-    <Button
-        android:id="@+id/btn_2"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:text="2"
-        android:textSize="40sp"
-        android:textColor="#f8fdf9"
-        android:tag="x"
-        android:layout_margin="30sp"
-        android:layout_below="@+id/btn_1"
-        />
+        <Button
+            android:id="@+id/btn_6"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/round_shape"
+            android:text="6"
+            android:textSize="40sp"
+            android:textColor="#f8fdf9"
+            android:tag="x"
+            android:layout_margin="30sp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/btn_5"
+            />
 
-
-
-    <Button
-        android:id="@+id/btn_3"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:text="3"
-        android:textSize="40sp"
-        android:textColor="#f8fdf9"
-        android:tag="x"
-        android:layout_margin="30sp"
-        android:layout_below="@+id/btn_2"
-        />
-
-
-    <Button
-        android:id="@+id/btn_4"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:text="4"
-        android:textSize="40sp"
-        android:textColor="#f8fdf9"
-        android:tag="x"
-        android:layout_margin="30sp"
-        android:layout_alignParentRight="true"
-        />
-
-
-
-    <Button
-        android:id="@+id/btn_5"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:text="5"
-        android:textSize="40sp"
-        android:textColor="#f8fdf9"
-        android:tag="x"
-        android:layout_margin="30sp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/btn_4"
-        />
-
-
-
-    <Button
-        android:id="@+id/btn_6"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/round_shape"
-        android:text="6"
-        android:textSize="40sp"
-        android:textColor="#f8fdf9"
-        android:tag="x"
-        android:layout_margin="30sp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/btn_5"
-        />
-
--->
+    -->
 
 
     <!--

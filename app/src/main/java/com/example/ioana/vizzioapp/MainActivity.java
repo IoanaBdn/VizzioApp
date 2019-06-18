@@ -2,6 +2,10 @@ package com.example.ioana.vizzioapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -31,6 +35,22 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    ///////////////////////////////////////////////
+    Constant constant;
+    SharedPreferences.Editor editor;
+    SharedPreferences app_preferences;
+    int appTheme;
+    int themeColor;
+    int appColor;
+    ///////////////////////////////////////////////
+
+
+
+
+
+
+
+
     private Toolbar mToolbar;
     //locul in care se afiseaza continutul taburilor
     private ViewPager myViewPager;
@@ -50,12 +70,30 @@ public class MainActivity extends AppCompatActivity {
 
     private String currentUserID;
 
+    private UserPreferencesManager userPreferencesManager = new UserPreferencesManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        UserPreferencesManager.initializePreferences(this);
+///////////////////////////////////////////////////////////////////////
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        appColor = app_preferences.getInt("color", 0);
+        appTheme = app_preferences.getInt("theme", 0);
+        themeColor = appColor;
+        constant.color = appColor;
+
+        if (themeColor == 0){
+            setTheme(Constant.theme);
+        }else if (appTheme == 0){
+            setTheme(Constant.theme);
+        }else{
+            setTheme(appTheme);
+        }
+///////////////////////////////////////////////////////////////////////
+
+        userPreferencesManager.initializePreferences(this);
 
         setContentView(R.layout.activity_main);
 
@@ -65,11 +103,13 @@ public class MainActivity extends AppCompatActivity {
         RootRef = FirebaseDatabase.getInstance().getReference();
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        mToolbar.setBackgroundColor(Constant.color);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("VizzioApp");
 
         //tabs
         myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
+
         myTabsAccesorAdapter = new TabsAccesorAdapter(getSupportFragmentManager());
         myViewPager.setAdapter(myTabsAccesorAdapter);
 
@@ -80,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -93,6 +135,14 @@ public class MainActivity extends AppCompatActivity {
 
             VerifyUserExistance();
         }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        userPreferencesManager.initializePreferences(this);
+
     }
 
     @Override

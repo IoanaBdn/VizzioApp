@@ -1,8 +1,15 @@
 package com.example.ioana.vizzioapp;
 
+import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
+import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +40,8 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.turkialkhateeb.materialcolorpicker.ColorChooserDialog;
+import com.turkialkhateeb.materialcolorpicker.ColorListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,14 +51,33 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingsActivity extends AppCompatActivity {
 
+///////////////////////////////////////////////////////
+SharedPreferences sharedPreferences, app_preferences;
+    SharedPreferences.Editor editor;
+    Button colorButton;
+
+
+    int appTheme;
+    int themeColor;
+    int appColor;
+    Constant constant;
+///////////////////////////////////////////////////////
+
+
 
     private Button UpdateAccountSettings;
     private EditText userName, userStatus;
     private CircleImageView userProfileImage;
 
+    private SeekBar seekBarBrightness, seekBarTextSize;
+    private TextView textPreview;
+
+
     private String currentUserID;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
+
+    private UserPreferencesManager userPreferencesManager = new UserPreferencesManager();
 
     private static final int GalleryPick = 1;
     private StorageReference UserProfileImagesRef;
@@ -62,11 +92,94 @@ public class SettingsActivity extends AppCompatActivity {
     ArrayAdapter<String> profileTypeSpinnerAdapter;
     ArrayAdapter<String> inputMethodSpinnerAdapter;
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    SeekBar.OnSeekBarChangeListener mySeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+        {
+            if(seekBar.equals(seekBarBrightness))
+            {
+                Toast.makeText(SettingsActivity.this, "Value: "+progress, Toast.LENGTH_SHORT).show();
+                userPreferencesManager.adjustScreenBrightness(SettingsActivity.this,progress);
+            }
+            else if(seekBar.equals(seekBarTextSize))
+            {
+                switch (progress)
+                {
+
+                    //small
+                    case 1:
+                        textPreview.setTextSize(13);
+                        textPreview.setText("Small");
+                        break;
+                    //default
+                    case 2:
+                        float size = new TextView(SettingsActivity.this).getTextSize();
+                        textPreview.setTextSize(15);
+
+                        textPreview.setText("Default");
+                        break;
+                    //large
+                    case 3:
+                        textPreview.setTextSize(18);
+                        textPreview.setText("Large");
+                        break;
+                    //largest
+                    case 4:
+                        textPreview.setTextSize(22);
+                        textPreview.setText("Largest");
+                        break;
+                }
+
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar)
+        {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
+///////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+
+        /////////////////////////////////////////////////////////
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        appColor = app_preferences.getInt("color", 0);
+        appTheme = app_preferences.getInt("theme", 0);
+        themeColor = appColor;
+        constant.color = appColor;
+        if (themeColor == 0){
+            setTheme(Constant.theme);
+        }else if (appTheme == 0){
+            setTheme(Constant.theme);
+        }else{
+            setTheme(appTheme);
+        }
+        /////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
         setContentView(R.layout.activity_settings);
 
 
@@ -77,6 +190,9 @@ public class SettingsActivity extends AppCompatActivity {
         UserProfileImagesRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
         InitializeFields();
+
+        seekBarBrightness.setOnSeekBarChangeListener(mySeekBarChangeListener);
+        seekBarTextSize.setOnSeekBarChangeListener(mySeekBarChangeListener);
 
         //userName.setVisibility(View.INVISIBLE);
 
@@ -152,6 +268,36 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivityForResult(galleryIntent, GalleryPick );
             }
         });
+
+
+
+        colorButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                ColorChooserDialog dialog = new ColorChooserDialog(SettingsActivity.this);
+                dialog.setTitle("Select");
+                dialog.setColorListener(new ColorListener() {
+                    @Override
+                    public void OnColorClick(View v, int color) {
+                        colorize();
+                        Constant.color = color;
+
+                        setColorTheme();
+                        editor.putInt("color", color);
+                        editor.putInt("theme",Constant.theme);
+                        editor.commit();
+
+                        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+
+                dialog.show();
+            }
+        });
+
+
     }
 
 
@@ -227,17 +373,36 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void InitializeFields()
     {
+
         UpdateAccountSettings = (Button) findViewById(R.id.update_settings_button);
         userName = (EditText) findViewById(R.id.set_user_name);
         userStatus = (EditText) findViewById(R.id.set_profile_status);
         userProfileImage = (CircleImageView) findViewById(R.id.set_profile_image);
+
+        seekBarBrightness =(SeekBar) findViewById(R.id.seekbar_screen_brightness);
+        seekBarTextSize =(SeekBar) findViewById(R.id.seekbar_text_size);
+        textPreview = (TextView) findViewById(R.id.preview_text_size);
+
+
         loadingBar = new ProgressDialog(this);
 
         SettingsToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.settings_toolbar);
+        SettingsToolbar.setBackgroundColor(Constant.color);
         setSupportActionBar(SettingsToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setTitle("Account Settings");
+
+
+        ////////////////////////////////////////////////////
+        colorButton = (Button) findViewById(R.id.button_color);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPreferences.edit();
+
+        colorize();
+
+
+        ////////////////////////////////////////////////////
     }
 
     private void UpdateSettings()
@@ -247,6 +412,9 @@ public class SettingsActivity extends AppCompatActivity {
         //update profile status
         String setProfileType = profileTypeSpinner.getSelectedItem().toString();
         String setInputMethod = inputMethodSpinner.getSelectedItem().toString();
+
+        String setScreenBrightness = String.valueOf(seekBarBrightness.getProgress());
+        String setTextSize = String.valueOf(seekBarTextSize.getProgress());
 
         if(TextUtils.isEmpty(setUserName))
         {
@@ -264,6 +432,9 @@ public class SettingsActivity extends AppCompatActivity {
             profileMap.put("status", setUserStatus);
             profileMap.put("profileType", setProfileType);
             profileMap.put("inputMethod", setInputMethod);
+            profileMap.put("screenBrightness", setScreenBrightness);
+            profileMap.put("textSize", setTextSize);
+
 
             RootRef.child("Users").child(currentUserID).updateChildren(profileMap)
             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -343,6 +514,19 @@ public class SettingsActivity extends AppCompatActivity {
                             retrieveInputMethod = dataSnapshot.child("inputMethod").getValue().toString();
                         }
 
+                        String retrieveScreenBrightness=null;
+                        if(dataSnapshot.hasChild("screenBrightness"))
+                        {
+                            retrieveScreenBrightness = dataSnapshot.child("screenBrightness").getValue().toString();
+                        }
+
+                        String retrieveTextSize=null;
+                        if(dataSnapshot.hasChild("textSize"))
+                        {
+                            retrieveTextSize = dataSnapshot.child("textSize").getValue().toString();
+                        }
+
+
                         //profile type spinner
                         if (retrieveProfileType != null)
                         {
@@ -353,6 +537,48 @@ public class SettingsActivity extends AppCompatActivity {
                         {
                             int spinnerPosition = inputMethodSpinnerAdapter.getPosition(retrieveInputMethod);
                             inputMethodSpinner.setSelection(spinnerPosition);
+                        }
+
+                        if (retrieveScreenBrightness != null)
+                        {
+                            seekBarBrightness.setProgress(Integer.parseInt(retrieveScreenBrightness));
+                        }
+
+
+                        if (retrieveTextSize != null)
+                        {
+
+                            seekBarTextSize.setProgress(Integer.parseInt(retrieveTextSize));
+
+                            switch (Integer.parseInt(retrieveTextSize))
+                            {
+
+                                case 1:
+                                    //small
+                                    userPreferencesManager.adjustFontScale(SettingsActivity.this,(float)0.8);
+                                    break;
+
+                                case 2:
+                                    //default
+                                    userPreferencesManager.adjustFontScale(SettingsActivity.this,(float)1.0);
+                                    break;
+
+                                case 3:
+                                    //large
+                                    userPreferencesManager.adjustFontScale(SettingsActivity.this,(float)1.3);
+                                    break;
+
+                                case 4:
+                                    //largest
+                                    userPreferencesManager.adjustFontScale(SettingsActivity.this,(float)1.5);
+                                    break;
+                            }
+
+                        }
+                        else
+                        {
+                            seekBarTextSize.setProgress(1);
+
                         }
 
                     }
@@ -376,5 +602,57 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
+
+    public void setColorTheme()
+    {
+
+        switch (Constant.color) {
+            case 0xffF44336:
+                Constant.theme = R.style.AppTheme_red;
+                break;
+            case 0xffE91E63:
+                Constant.theme = R.style.AppTheme_pink;
+                break;
+            case 0xff9C27B0:
+                Constant.theme = R.style.AppTheme_darpink;
+                break;
+            case 0xff673AB7:
+                Constant.theme = R.style.AppTheme_violet;
+                break;
+            case 0xff3F51B5:
+                Constant.theme = R.style.AppTheme_blue;
+                break;
+            case 0xff03A9F4:
+                Constant.theme = R.style.AppTheme_skyblue;
+                break;
+            case 0xff4CAF50:
+                Constant.theme = R.style.AppTheme_green;
+                break;
+            case 0xffFF9800:
+                Constant.theme = R.style.AppTheme;
+                break;
+            case 0xff9E9E9E:
+                Constant.theme = R.style.AppTheme_grey;
+                break;
+            case 0xff795548:
+                Constant.theme = R.style.AppTheme_brown;
+                break;
+            default:
+                Constant.theme = R.style.AppTheme;
+                break;
+        }
+    }
+
+
+    private void colorize(){
+        ShapeDrawable d = new ShapeDrawable(new OvalShape());
+        d.setBounds(58, 58, 58, 58);
+
+        d.getPaint().setStyle(Paint.Style.FILL);
+
+        d.getPaint().setColor(Constant.color);
+
+        colorButton.setBackground(d);
+    }
 
 }

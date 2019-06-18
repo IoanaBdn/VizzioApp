@@ -23,7 +23,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FindFriendsActivity extends AppCompatActivity
 {
 
-    private Toolbar mToolbar;
+
+    private android.support.v7.widget.Toolbar mToolbar;
     private RecyclerView FindFriendsRecycleList;
 
     private DatabaseReference userRef;
@@ -39,10 +40,11 @@ public class FindFriendsActivity extends AppCompatActivity
         FindFriendsRecycleList = (RecyclerView) findViewById(R.id.find_friends_recycle_list);
         FindFriendsRecycleList.setLayoutManager(new LinearLayoutManager(this));
 
-        mToolbar = (Toolbar) findViewById(R.id.find_friends_toolbar);
+
+        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.find_friends_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setTitle("Find Friends");
 
     }

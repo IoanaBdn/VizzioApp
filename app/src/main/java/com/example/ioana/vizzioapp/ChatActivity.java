@@ -5,12 +5,11 @@ package com.example.ioana.vizzioapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.inputmethodservice.Keyboard;
-import android.inputmethodservice.KeyboardView;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -21,14 +20,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -52,10 +45,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import Keyboards.BrailleKeyboard;
+import Keyboards.CustomKeyboard;
+import Keyboards.VoiceInputKeyboard;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
 
+/////////////////////////////////////////////////////////
+Constant constant;
+    SharedPreferences.Editor editor;
+    SharedPreferences app_preferences;
+    int appTheme;
+    int themeColor;
+    int appColor;
+
+
+    /////////////////////////////////////////////////////////
     private String messageReceiverID, messageReceiverName, messageReceiverImage, messageSenderID;
     private TextView userName, userLastSeen;
     private CircleImageView userImage;
@@ -91,12 +97,33 @@ public class ChatActivity extends AppCompatActivity {
     protected SpeechRecognizer mSpeechRecognizer;
     protected Intent mSpeechRecognizerIntent;
 
+    private UserPreferencesManager userPreferencesManager = new UserPreferencesManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        UserPreferencesManager.initializePreferences(this);
+
+
+
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        appColor = app_preferences.getInt("color", 0);
+        appTheme = app_preferences.getInt("theme", 0);
+        themeColor = appColor;
+        constant.color = appColor;
+
+        if (themeColor == 0){
+            setTheme(Constant.theme);
+        }else if (appTheme == 0){
+            setTheme(Constant.theme);
+        }else{
+            setTheme(appTheme);
+        }
+
+
+
+        userPreferencesManager.initializePreferences(this);
 
 
         setContentView(R.layout.activity_chat);
@@ -198,7 +225,13 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        Toast.makeText(this, "resume", Toast.LENGTH_SHORT).show();
+        userPreferencesManager.initializePreferences(this);
+    }
 
     private void InitializeControllers()
     {
@@ -232,6 +265,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
         ChatToolbar = (Toolbar) findViewById(R.id.chat_toolbar);
+        ChatToolbar.setBackgroundColor(Constant.color);
         setSupportActionBar(ChatToolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -240,6 +274,8 @@ public class ChatActivity extends AppCompatActivity {
 
         LayoutInflater layoutInflater  = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View actionBarView = layoutInflater.inflate(R.layout.custom_chat_bar,null);
+
+        actionBarView.setBackgroundColor(Constant.color);
         actionBar.setCustomView(actionBarView);
 
         userName = (TextView) findViewById(R.id.custom_profile_name);
@@ -492,6 +528,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    /*
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -507,6 +544,8 @@ public class ChatActivity extends AppCompatActivity {
 
         }
     }
+*/
+
 
     private void SetSpeechListener()
     {

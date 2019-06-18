@@ -27,7 +27,7 @@
                 android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/keyboard_icon"
+                android:src="@drawable/keyboard"
                 android:background="@drawable/round_shape"
                 android:textColor="#f8fdf9"
                 />
@@ -49,7 +49,7 @@
 
 
                 android:background="@drawable/round_shape"
-                android:src="@drawable/microphone_icon"
+                android:src="@drawable/microphone"
                 android:textColor="#f8fdf9"
                 />
 
@@ -80,7 +80,7 @@
                 android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/backspace_icon"
+                android:src="@drawable/backspace_voice"
 
                 android:background="@drawable/round_shape"
                 android:textColor="#f8fdf9"

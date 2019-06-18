@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
        android:layout_below="@+id/chat_toolbar"
         android:layout_above="@+id/send_message_layout"
-        android:background="@android:color/darker_gray">
+        android:background="#e6e6e6">
 
     </android.support.v7.widget.RecyclerView>
     
@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
 
+
             >
 
             <EditText
@@ -45,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:hint="type message here..."
                 android:padding="15dp"
-                android:maxLines="4"
+                android:maxLines="2"
                 android:textSize="20sp"
                 />
 
@@ -60,7 +61,7 @@
 
         </LinearLayout>
 
-        <com.example.ioana.vizzioapp.VoiceInputKeyboard
+        <Keyboards.VoiceInputKeyboard
             android:id="@+id/keyboard_voice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,10 +82,10 @@
             android:keyTextColor="@android:color/white"
             android:keyBackground="@drawable/key_background"
             android:keyPreviewLayout="@xml/key_preview"
-            android:background="@color/keyboard_background_color"
+
             android:visibility="gone" />
 
-        <com.example.ioana.vizzioapp.BrailleKeyboard
+        <Keyboards.BrailleKeyboard
             android:id="@+id/keyboard_braille"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

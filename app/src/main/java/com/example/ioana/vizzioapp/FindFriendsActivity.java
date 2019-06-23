@@ -25,6 +25,9 @@ public class FindFriendsActivity extends AppCompatActivity
 
 
     private android.support.v7.widget.Toolbar mToolbar;
+    private android.support.v7.widget.Toolbar FindFriendsToolbar;
+
+
     private RecyclerView FindFriendsRecycleList;
 
     private DatabaseReference userRef;
@@ -35,17 +38,26 @@ public class FindFriendsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friends);
 
+
+
+        FindFriendsToolbar = (Toolbar) findViewById(R.id.find_friends_toolbar);
+        FindFriendsToolbar.setBackgroundColor(Constant.color);
+        setSupportActionBar(FindFriendsToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setTitle("Find Friends");
+
+
+
+
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         FindFriendsRecycleList = (RecyclerView) findViewById(R.id.find_friends_recycle_list);
         FindFriendsRecycleList.setLayoutManager(new LinearLayoutManager(this));
 
 
-        mToolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.find_friends_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setTitle("Find Friends");
+
+
 
     }
 

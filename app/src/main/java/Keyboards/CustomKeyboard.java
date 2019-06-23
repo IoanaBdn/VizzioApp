@@ -1,12 +1,19 @@
 package Keyboards;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.NinePatchDrawable;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.media.AudioManager;
+import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.style.BackgroundColorSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,6 +22,11 @@ import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.ioana.vizzioapp.Constant;
+import com.example.ioana.vizzioapp.R;
 
 import Keyboards.VoiceInputKeyboard;
 
@@ -26,9 +38,13 @@ public class CustomKeyboard {
     /** A link to the KeyboardView that is used to render this CustomKeyboard. */
     private KeyboardView mKeyboardView;
     /** A link to the activity that hosts the {@link #mKeyboardView}. */
-    private Activity     mHostActivity;
+    private Activity mHostActivity;
 
     private Keyboard mKeyboard;
+
+
+    TextView keyPreview;
+
 
     //voice keyboard
     private VoiceInputKeyboard voiceKeyboard ;
@@ -36,27 +52,22 @@ public class CustomKeyboard {
     Boolean isCaps = false;
 
     /** The key (code) handler. */
+
+
     private OnKeyboardActionListener mOnKeyboardActionListener = new OnKeyboardActionListener() {
-
-
         public final static int CodeVoiceKeyboard    = -4;
 
         @Override public void onKey(int primaryCode, int[] keyCodes) {
             // NOTE We can say '<Key android:codes="49,50" ... >' in the xml file; all codes come in keyCodes, the first in this list in primaryCode
             // Get the EditText and its Editable
 
-
             View focusCurrent = mHostActivity.getWindow().getCurrentFocus();
 
-            //if( focusCurrent==null || focusCurrent.getClass()!=EditText.class ) return;
             EditText edittext = (EditText) focusCurrent;
             Editable editable = edittext.getText();
 
-
             int start = edittext.getSelectionStart();
 
-
-            //InputConnection inputConnection = getCurrentInputConnection();
             playClick(primaryCode);
             switch (primaryCode){
 
@@ -72,9 +83,7 @@ public class CustomKeyboard {
                     break;
 
                 case CodeVoiceKeyboard:
-                    //editable.insert(start, String.valueOf(109));
                     int inputId = edittext.getId();
-                    //voiceKeyboard.registerEditText(R.id.input_message);
                     hideCustomKeyboard();
                     voiceKeyboard.registerEditText(inputId);
                     View rootView = mHostActivity.getWindow().getDecorView().findViewById(android.R.id.content);
@@ -83,27 +92,17 @@ public class CustomKeyboard {
 
                     break;
 
-                    /*
-                case Keyboard.KEYCODE_DONE:
-
-                    inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_ENTER));
-                    break;
-                    */
-
                 default:
                     char code = (char) primaryCode;
                     if(Character.isLetter(code) && isCaps){
                         code = Character.toUpperCase(code);
                     }
-                    //inputConnection.commitText(String.valueOf(code),1);
                     editable.insert(start, String.valueOf(code));
 
             }
 
 
         }
-
-
         private void playClick(int i){
 
             AudioManager audioManager = (AudioManager) mHostActivity.getSystemService(AUDIO_SERVICE);
@@ -126,28 +125,23 @@ public class CustomKeyboard {
             }
 
         }
-
         @Override public void onPress(int arg0) {
         }
-
         @Override public void onRelease(int primaryCode) {
         }
-
         @Override public void onText(CharSequence text) {
         }
-
         @Override public void swipeDown() {
         }
-
         @Override public void swipeLeft() {
         }
-
         @Override public void swipeRight() {
         }
-
         @Override public void swipeUp() {
         }
     };
+
+
 
     /**
      * Create a custom keyboard, that uses the KeyboardView (with resource id <var>viewid</var>) of the <var>host</var> activity,
@@ -163,10 +157,27 @@ public class CustomKeyboard {
     public CustomKeyboard(Activity host, int viewid, int layoutid, int kVoiceLayoutId) {
         mHostActivity = host;
         mKeyboardView = (KeyboardView)mHostActivity.findViewById(viewid);
-
         voiceKeyboard = (VoiceInputKeyboard) mHostActivity.findViewById(kVoiceLayoutId);
 
-        mKeyboard =   new Keyboard(mHostActivity, layoutid);
+       // NinePatchDrawable drawable = (NinePatchDrawable) mKeyboardView.getBackground();
+       //drawable.setTint(Color.GREEN);
+
+/*
+        Drawable unwrappedDrawable = AppCompatResources.getDrawable(mHostActivity, R.drawable.normal);
+
+        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+        DrawableCompat.setTint(wrappedDrawable, Color.RED);
+
+
+        Toast.makeText(mHostActivity, " "+drawable, Toast.LENGTH_SHORT).show();
+
+        */
+
+        //GradientDrawable bgShapeKeyboard = (GradientDrawable)voiceKeyboard.getBackground();
+        //bgShapeKeyboard.mutate();
+        //bgShapeKeyboard.setColor(Constant.color);
+
+        mKeyboard =  new Keyboard(mHostActivity, layoutid);
         mKeyboardView.setKeyboard(mKeyboard);
         mKeyboardView.setPreviewEnabled(false); // NOTE Do not show the preview balloons
         mKeyboardView.setOnKeyboardActionListener(mOnKeyboardActionListener);
@@ -235,6 +246,8 @@ public class CustomKeyboard {
         // Disable spell check (hex strings look like words to Android)
         edittext.setInputType(edittext.getInputType() | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
     }
+
+
 
 }
 

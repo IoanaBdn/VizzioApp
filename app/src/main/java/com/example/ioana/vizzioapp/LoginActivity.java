@@ -79,6 +79,9 @@ public class LoginActivity extends AppCompatActivity
             }
         });
 
+
+
+
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
@@ -86,6 +89,10 @@ public class LoginActivity extends AppCompatActivity
                 AllowUserToLogin();
             }
         });
+
+
+
+
     }
 
 
@@ -109,6 +116,8 @@ public class LoginActivity extends AppCompatActivity
             loadingBar.setCanceledOnTouchOutside(true);
             loadingBar.show();
 
+
+
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(
                     new OnCompleteListener<AuthResult>() {
                         @Override
@@ -117,18 +126,17 @@ public class LoginActivity extends AppCompatActivity
                             if(task.isSuccessful())
                             {
                                 String currentUSerId = mAuth.getCurrentUser().getUid();
-                                //String deviceToken = FirebaseInstanceId.getInstance().getToken();
-                                
-
                                 SendUserToMainActivity();
-                                Toast.makeText(LoginActivity.this, "Logged in successful...", Toast.LENGTH_SHORT);
+                                Toast.makeText(LoginActivity.this,"Logged in successful...",
+                                                Toast.LENGTH_SHORT);
                                 loadingBar.dismiss();
 
                             }
                             else
                             {
                                 String message = task.getException().toString();
-                                Toast.makeText(LoginActivity.this, "Error : "+ message , Toast.LENGTH_SHORT);
+                                Toast.makeText(LoginActivity.this,"Error : "+ message ,
+                                                Toast.LENGTH_SHORT);
                                 loadingBar.dismiss();
 
                             }
@@ -136,6 +144,8 @@ public class LoginActivity extends AppCompatActivity
                         }
                     }
             );
+
+
         }
 
     }

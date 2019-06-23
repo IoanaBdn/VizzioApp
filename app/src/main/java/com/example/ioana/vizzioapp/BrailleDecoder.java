@@ -120,53 +120,40 @@ public class BrailleDecoder
         numbersHashMap.put("000100",' ');
         numbersHashMap.put("000001",'~');
 
-
-
     }
 
 
     public Character decodeBrailleStringToChar(String binaryBraille, boolean isCaps, boolean isNumeric)
     {
         Character character = null;
-        if(isCaps)//daca e cu caps clar litere
+        if(isCaps)
         {
             if(isNumeric)
             {
-                System.out.println("BRAILE DECODER:*******###@@#@#@$@#$# "+binaryBraille);
                 character = numbersHashMap.get(binaryBraille);
-                System.out.println("BRAILE DECODER:*******###@@#@#@$@#$# "+character);
             }
             else
             {
-                System.out.println("BRAILE DECODER:*******###@@#@#@$@#$# "+binaryBraille);
                 character = capitalLettersSymbolsHashMap.get(binaryBraille);
-                System.out.println("BRAILE DECODER:*******###@@#@#@$@#$# "+character);
             }
         }
         else
         {
             if(isNumeric)
             {
-                System.out.println("BRAILE DECODER:*******###@@#@#@$@#$# "+binaryBraille);
                 character = numbersHashMap.get(binaryBraille);
-                System.out.println("BRAILE DECODER:*******###@@#@#@$@#$# "+character);
             }
             else
             {
-                System.out.println("BRAILE DECODER:*******###@@#@#@$@#$# "+binaryBraille);
                 character = lettersSymbolsHashMap.get(binaryBraille);
-                System.out.println("BRAILE DECODER:*******###@@#@#@$@#$# "+character);
             }
         }
-
-
 
         if(character == null)
         {
             character = Character.MIN_VALUE;
         }
-
-        //return String.valueOf(character);
         return character;
     }
+
 }

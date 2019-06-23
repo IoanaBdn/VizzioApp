@@ -2,6 +2,11 @@ package Keyboards;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.VectorDrawable;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.AttributeSet;
@@ -16,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.ioana.vizzioapp.Constant;
 import com.example.ioana.vizzioapp.PermissionHandler;
 import com.example.ioana.vizzioapp.R;
 import com.example.ioana.vizzioapp.SpeechRecognizerManager;
@@ -29,7 +35,7 @@ public class VoiceInputKeyboard  extends LinearLayout implements View.OnClickLis
 
 
     // // // // // // // // // // //
-    private VoiceInputKeyboard mKeyboardLayout;
+
 
     private Activity mHostActivity;
 
@@ -65,50 +71,137 @@ public class VoiceInputKeyboard  extends LinearLayout implements View.OnClickLis
     // keyboard keys (buttons)
     private ImageButton keyboardButton;
     private ImageButton startListenButton;
-    private ImageButton stopListenButton;
     private ImageButton backspaceButton;
 
-    /*
-    private Button mButton1;
-    private Button mButton2;
-    private Button mButton3;
-    private Button mButton4;
-    private Button mButton5;
-    private Button mButton6;
-    private Button mButton7;
-    private Button mButton8;
-    private Button mButton9;
-    private Button mButton0;
-    private Button mButtonDelete;
-    private Button mButtonEnter;
-    */
+
     // This will map the button resource id to the String value that we want to
     // input when that button is clicked.
-    SparseArray<String> keyValues = new SparseArray<>();
 
-    // Our communication link to the EditText
-    InputConnection inputConnection;
+
+
+    ///////////////////////////////////////////////
+    Constant constant;
+    SharedPreferences.Editor editor;
+    SharedPreferences app_preferences;
+    int appTheme;
+    int themeColor;
+    int appColor;
+    ///////////////////////////////////////////////
+
+
+
+
 
     private void init(Context context) {
 
+
+
         mHostActivity = (Activity) context;
 
+
+
+
+
+///////////////////////////////////////////////////////////////////////
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(mHostActivity);
+        appColor = app_preferences.getInt("color", 0);
+        appTheme = app_preferences.getInt("theme", 0);
+        themeColor = appColor;
+        constant.color = appColor;
+
+        if (themeColor == 0){
+            mHostActivity.setTheme(Constant.theme);
+        }else if (appTheme == 0){
+            mHostActivity.setTheme(Constant.theme);
+        }else{
+            mHostActivity.setTheme(appTheme);
+        }
+///////////////////////////////////////////////////////////////////////
+
+
+
         // initialize buttons
-        LayoutInflater.from(context).inflate(R.layout.voice_input_keyboard, this, true);
+
+         LayoutInflater.from(context).inflate(R.layout.voice_input_keyboard, this, true);
 
 
         keyboardButton = (ImageButton) findViewById(R.id.keyboard_btn);
         startListenButton = (ImageButton) findViewById(R.id.start_listen_btn);
-        stopListenButton = (ImageButton) findViewById(R.id.stop_listen_btn);
         backspaceButton = (ImageButton) findViewById(R.id.backspace_btn);
+
+
+
+        GradientDrawable bgShapeKeyboard = (GradientDrawable)keyboardButton.getBackground();
+        bgShapeKeyboard.mutate();
+        bgShapeKeyboard.setColor(Constant.color);
+
+        GradientDrawable bgShapeListen = (GradientDrawable)startListenButton.getBackground();
+        bgShapeListen.mutate();
+        bgShapeListen.setColor(Constant.color);
+
+        GradientDrawable bgShapeBackspace = (GradientDrawable)backspaceButton.getBackground();
+        bgShapeBackspace.mutate();
+        bgShapeBackspace.setColor(Constant.color);
+
+
+
 
         // set button click listeners
         keyboardButton.setOnClickListener(this);
-        startListenButton.setOnClickListener(this);
-        stopListenButton.setOnClickListener(this);
+       // startListenButton.setOnClickListener(this);
         backspaceButton.setOnClickListener(this);
 
 
+        startListenButton.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                EditText MessageInputText= (EditText)mHostActivity.findViewById(mMessageInputId);
+
+                switch (event.getAction())
+                {
+                    case MotionEvent.ACTION_UP:
+                        if(PermissionHandler.checkPermission(mHostActivity,PermissionHandler.RECORD_AUDIO))
+                        {
+                            if (mSpeechManager != null)
+                            {
+                                mSpeechManager.destroy();
+                                mSpeechManager = null;
+                            }
+                            startListenButton.setImageResource(R.drawable.microphone);
+                        }
+                        else
+                        {
+                            PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,mHostActivity);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_DOWN:
+                        Toast.makeText(mHostActivity, "Listening...", Toast.LENGTH_SHORT).show();
+                        if(PermissionHandler.checkPermission(mHostActivity,PermissionHandler.RECORD_AUDIO))
+                        {
+                            if(mSpeechManager==null)
+                            {
+                                SetSpeechListener(MessageInputText);
+                            }
+                            else if(!mSpeechManager.ismIsListening())
+                            {
+                                mSpeechManager.destroy();
+                                SetSpeechListener(MessageInputText);
+                            }
+                            startListenButton.setImageResource(R.drawable.speaking);
+                        }
+                        else
+                        {
+                            PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,mHostActivity);
+                        }
+                        break;
+                }
+
+                return false;
+            }
+        });
 
     }
 
@@ -125,8 +218,6 @@ public class VoiceInputKeyboard  extends LinearLayout implements View.OnClickLis
 
         int start = edittext.getSelectionStart();
 
-        // do nothing if the InputConnection has not been set yet
-        //if (inputConnection == null) return;
 
         EditText MessageInputText= (EditText)mHostActivity.findViewById(mMessageInputId);
 
@@ -145,94 +236,13 @@ public class VoiceInputKeyboard  extends LinearLayout implements View.OnClickLis
 
                 mCustomKeyboard.showCustomKeyboard(v);
                 break;
-            //__________START LISTEN__________//
-            case R.id.start_listen_btn:
-                if(PermissionHandler.checkPermission(mHostActivity,PermissionHandler.RECORD_AUDIO))
-                {
-
-                    if(mSpeechManager==null)
-                    {
-                        SetSpeechListener(MessageInputText);
-                    }
-                    else if(!mSpeechManager.ismIsListening())
-                    {
-                        mSpeechManager.destroy();
-                        SetSpeechListener(MessageInputText);
-                    }
-                    //MessageInputText.setText(getString(R.string.you_may_speak));
-                    startListenButton.setVisibility(View.GONE);
-                    stopListenButton.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,mHostActivity);
-                }
-                break;
-            //__________STOP LISTEN__________//
-            case R.id.stop_listen_btn:
-                if(PermissionHandler.checkPermission(mHostActivity,PermissionHandler.RECORD_AUDIO))
-                {
-
-                    if (mSpeechManager != null)
-                    {
-                        //MessageInputText.setText(getString(R.string.destroied));
-                        mSpeechManager.destroy();
-                        mSpeechManager = null;
-                    }
-                    stopListenButton.setVisibility(View.GONE);
-                    startListenButton.setVisibility(View.VISIBLE);
-                }
-                else
-                {
-                    PermissionHandler.askForPermission(PermissionHandler.RECORD_AUDIO,mHostActivity);
-                }
-                break;
             //__________BACKSPACE__________//
             case R.id.backspace_btn:
                 if( editable!=null && start>0 ) editable.delete(start - 1, start);
 
                 break;
         }
-/*
-        if(v.getId() == R.id.keyboard_btn)
-        {
-            Log.d("APASAT:","KEYBOARD");
-        }
-        else if(v.getId() == R.id.start_listen_btn)
-        {
-            Log.d("APASAT:","start listen");
 
-
-        }
-        else if(v.getId() == R.id.stop_listen_btn)
-        {
-            Log.d("APASAT:","stop listen");
-
-        }
-        else if(v.getId() == R.id.backspace_btn)
-        {
-            Log.d("APASAT:","backspace");
-
-        }
-*/
-
-        // Delete text or input key value
-        // All communication goes through the InputConnection
-        /*
-        if (v.getId() == R.id.button_delete) {
-            CharSequence selectedText = inputConnection.getSelectedText(0);
-            if (TextUtils.isEmpty(selectedText)) {
-                // no selection, so delete previous character
-                inputConnection.deleteSurroundingText(1, 0);
-            } else {
-                // delete the selection
-                inputConnection.commitText("", 1);
-            }
-        } else {
-            String value = keyValues.get(v.getId());
-            inputConnection.commitText(value, 1);
-        }
-        */
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -295,11 +305,6 @@ public class VoiceInputKeyboard  extends LinearLayout implements View.OnClickLis
         return this.getVisibility() == View.VISIBLE;
     }
 
-    // The activity (or some parent or controller) must give us
-    // a reference to the current EditText's InputConnection
-    public void setInputConnection(InputConnection ic) {
-        this.inputConnection = ic;
-    }
 
 
     private void SetSpeechListener(final EditText MessageInputText)
@@ -312,14 +317,12 @@ public class VoiceInputKeyboard  extends LinearLayout implements View.OnClickLis
 
                 if(results!=null && results.size()>0)
                 {
-
                     mSpeechManager.destroy();
                     mSpeechManager = null;
-                    MessageInputText.setText(results.get(0));
-
+                    MessageInputText.setText(MessageInputText.getText().toString()+" "+results.get(0));
+                    MessageInputText.setSelection(MessageInputText.getText().length());
                 }
-                //else
-                    //MessageInputText.setText(getString(R.string.no_results_found));
+
             }
         });
     }

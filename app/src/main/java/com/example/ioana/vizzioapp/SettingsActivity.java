@@ -100,14 +100,12 @@ SharedPreferences sharedPreferences, app_preferences;
         {
             if(seekBar.equals(seekBarBrightness))
             {
-                Toast.makeText(SettingsActivity.this, "Value: "+progress, Toast.LENGTH_SHORT).show();
                 userPreferencesManager.adjustScreenBrightness(SettingsActivity.this,progress);
             }
             else if(seekBar.equals(seekBarTextSize))
             {
                 switch (progress)
                 {
-
                     //small
                     case 1:
                         textPreview.setTextSize(13);
@@ -190,6 +188,8 @@ SharedPreferences sharedPreferences, app_preferences;
         UserProfileImagesRef = FirebaseStorage.getInstance().getReference().child("Profile Images");
 
         InitializeFields();
+        RetrieveUserInfo();
+
 
         seekBarBrightness.setOnSeekBarChangeListener(mySeekBarChangeListener);
         seekBarTextSize.setOnSeekBarChangeListener(mySeekBarChangeListener);
@@ -254,7 +254,6 @@ SharedPreferences sharedPreferences, app_preferences;
         });
 
 
-        RetrieveUserInfo();
 
         userProfileImage.setOnClickListener(new View.OnClickListener()
         {
@@ -375,6 +374,7 @@ SharedPreferences sharedPreferences, app_preferences;
     {
 
         UpdateAccountSettings = (Button) findViewById(R.id.update_settings_button);
+        UpdateAccountSettings.setBackgroundColor(Constant.color);
         userName = (EditText) findViewById(R.id.set_user_name);
         userStatus = (EditText) findViewById(R.id.set_profile_status);
         userProfileImage = (CircleImageView) findViewById(R.id.set_profile_image);

@@ -5,6 +5,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:importantForAccessibility="yes"
+    android:contentDescription="@null"
     >
 
     <RelativeLayout
@@ -17,39 +19,48 @@
             android:layout_width="95dp"
             android:layout_height="95dp"
             android:layout_margin="30sp"
-            android:background="@drawable/round_shape">
-
-            <TextView
-                android:id="@+id/txt_dot_1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:text="1"
-                android:textColor="@color/colorPrimaryBright"
-                android:textSize="40sp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
+            android:background="@drawable/round_shape"
 
 
-        <RelativeLayout
-            android:id="@+id/dot_2"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
-            android:layout_below="@id/dot_1"
-            android:layout_margin="30sp"
-            android:background="@drawable/round_shape">
+            >
 
-            <TextView
-                android:id="@+id/txt_dot_2"
+            <!--
+           <TextView
+               android:id="@+id/txt_dot_1"
+               android:layout_width="fill_parent"
+               android:layout_height="fill_parent"
+               android:gravity="center"
+               android:text="1"
+               android:textColor="@color/colorPrimaryBright"
+               android:textSize="40sp"
+               android:textStyle="bold" />
+               -->
 
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:text="2"
-                android:textColor="@color/colorPrimaryBright"
-                android:textSize="40sp"
-                android:textStyle="bold" />
+       </RelativeLayout>
+
+
+       <RelativeLayout
+           android:id="@+id/dot_2"
+           android:layout_width="95dp"
+           android:layout_height="95dp"
+           android:layout_below="@id/dot_1"
+           android:layout_margin="30sp"
+           android:background="@drawable/round_shape"
+           android:importantForAccessibility="yes">
+
+           <!--
+          <TextView
+              android:id="@+id/txt_dot_2"
+
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:gravity="center"
+              android:text="2"
+              android:textColor="@color/colorPrimaryBright"
+              android:textSize="40sp"
+              android:textStyle="bold" />
+
+          -->
 
         </RelativeLayout>
 
@@ -62,37 +73,42 @@
             android:layout_margin="30sp"
             android:background="@drawable/round_shape">
 
-            <TextView
-                android:id="@+id/txt_dot_3"
+            <!--
+           <TextView
+               android:id="@+id/txt_dot_3"
 
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:text="3"
-                android:textColor="@color/colorPrimaryBright"
-                android:textSize="40sp"
-                android:textStyle="bold" />
+               android:layout_width="fill_parent"
+               android:layout_height="fill_parent"
+               android:gravity="center"
+               android:text="3"
+               android:textColor="@color/colorPrimaryBright"
+               android:textSize="40sp"
+               android:textStyle="bold" />
+               -->
 
-        </RelativeLayout>
+       </RelativeLayout>
 
 
-        <RelativeLayout
-            android:id="@+id/dot_4"
-            android:layout_width="95dp"
-            android:layout_height="95dp"
-            android:layout_alignParentRight="true"
-            android:layout_margin="30sp"
-            android:background="@drawable/round_shape">
+       <RelativeLayout
+           android:id="@+id/dot_4"
+           android:layout_width="95dp"
+           android:layout_height="95dp"
+           android:layout_alignParentRight="true"
+           android:layout_margin="30sp"
+           android:background="@drawable/round_shape">
 
-            <TextView
-                android:id="@+id/txt_dot_4"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:text="4"
-                android:textColor="@color/colorPrimaryBright"
-                android:textSize="40sp"
-                android:textStyle="bold" />
+           <!--
+          <TextView
+              android:id="@+id/txt_dot_4"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:gravity="center"
+              android:text="4"
+              android:textColor="@color/colorPrimaryBright"
+              android:textSize="40sp"
+              android:textStyle="bold" />
+
+          -->
 
         </RelativeLayout>
 
@@ -105,17 +121,17 @@
             android:layout_alignParentRight="true"
             android:layout_margin="30sp"
             android:background="@drawable/round_shape">
-
-            <TextView
-                android:id="@+id/txt_dot_5"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:gravity="center"
-                android:text="5"
-                android:textColor="@color/colorPrimaryBright"
-                android:textSize="40sp"
-                android:textStyle="bold" />
-
+            <!--
+                       <TextView
+                           android:id="@+id/txt_dot_5"
+                           android:layout_width="fill_parent"
+                           android:layout_height="fill_parent"
+                           android:gravity="center"
+                           android:text="5"
+                           android:textColor="@color/colorPrimaryBright"
+                           android:textSize="40sp"
+                           android:textStyle="bold" />
+           -->
         </RelativeLayout>
 
         <RelativeLayout
@@ -127,6 +143,7 @@
             android:layout_margin="30sp"
             android:background="@drawable/round_shape">
 
+            <!--
             <TextView
                 android:id="@+id/txt_dot_6"
                 android:layout_width="fill_parent"
@@ -136,6 +153,7 @@
                 android:textColor="@color/colorPrimaryBright"
                 android:textSize="40sp"
                 android:textStyle="bold" />
+                -->
 
         </RelativeLayout>
 
@@ -156,6 +174,7 @@
             android:background="@color/colorPrimary"
 
             android:layout_weight="0.493"
+            android:contentDescription="Caps"
             />
 
         <TextView
@@ -172,6 +191,7 @@
             android:background="@color/colorPrimary"
 
             android:layout_weight="0.493"
+            android:contentDescription="Numeric"
             />
 
     </LinearLayout>

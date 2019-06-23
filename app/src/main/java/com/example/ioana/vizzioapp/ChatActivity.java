@@ -7,6 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +43,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.xmlpull.v1.XmlPullParser;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +57,8 @@ import Keyboards.CustomKeyboard;
 import Keyboards.VoiceInputKeyboard;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.graphics.Color.GREEN;
+
 public class ChatActivity extends AppCompatActivity {
 
 /////////////////////////////////////////////////////////
@@ -60,6 +69,7 @@ Constant constant;
     int themeColor;
     int appColor;
 
+    private TextView keyPreview;
 
     /////////////////////////////////////////////////////////
     private String messageReceiverID, messageReceiverName, messageReceiverImage, messageSenderID;
@@ -105,8 +115,6 @@ Constant constant;
         super.onCreate(savedInstanceState);
 
 
-
-
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
         appColor = app_preferences.getInt("color", 0);
         appTheme = app_preferences.getInt("theme", 0);
@@ -127,6 +135,11 @@ Constant constant;
 
 
         setContentView(R.layout.activity_chat);
+
+
+        TextView v = findViewById(R.id.key_preview);
+
+
 
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -464,6 +477,8 @@ Constant constant;
                                     mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.xml.normal_keyboard, R.id.keyboard_voice);
                                    // mCustomKeyboard= new CustomKeyboard(ChatActivity.this, R.id.keyboardview, R.layout.voice_input_keyboard );
 
+
+
                                     mCustomKeyboard.registerEditText(R.id.input_message);
 
 
@@ -695,13 +710,12 @@ Constant constant;
                 {
                     if(task.isSuccessful())
                     {
-                        Toast.makeText(ChatActivity.this, "Message sent successfully", Toast.LENGTH_SHORT ).show();
-
+                        Toast.makeText(ChatActivity.this, "Message sent successfully",
+                                        Toast.LENGTH_SHORT ).show();
                     }
                     else
                     {
                         Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT ).show();
-
                     }
 
                     MessageInputText.setText("");

@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         myViewPager.setAdapter(myTabsAccesorAdapter);
 
         myTabLayout = (TabLayout) findViewById(R.id.main_tabs);
+        myTabLayout.setBackgroundColor(Constant.color);
         myTabLayout.setupWithViewPager(myViewPager);
     }
 
@@ -257,61 +258,10 @@ public class MainActivity extends AppCompatActivity {
         Intent findFriendsIntent = new Intent(this, FindFriendsActivity.class);
 
         startActivity(findFriendsIntent);
-        finish();
+        //finish();
     }
 
-    /*
-    private void RequestNewGroup()
-    {
-        AlertDialog.Builder buider = new AlertDialog.Builder( MainActivity.this, R.style.AlertDialog);
-        buider.setTitle("Enter Group Name:");
 
-        final EditText groupNameField = new EditText (MainActivity.this);
-        groupNameField.setHint("e.g Some Group Name");
-        buider.setView(groupNameField);
-        buider.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                String  groupName  = groupNameField.getText().toString();
-
-                if(TextUtils.isEmpty(groupName))
-                {
-                    Toast.makeText(MainActivity.this, "Please write group name!", Toast.LENGTH_SHORT);
-                }
-                else
-                {
-                    CreateNewGroup(groupName);
-                }
-            }
-        });
-        buider.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.cancel();
-            }
-        });
-        buider.show();
-    }
-
-    private void CreateNewGroup(final String groupName)
-    {
-        // in cazul asta group name este drept id
-        RootRef.child("Groups").child(groupName).setValue("")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if(task.isSuccessful())
-                        {
-                            Toast.makeText(MainActivity.this, groupName + " group is created successfully", Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
-    }
-
-*/
 
     private void SendUserToSettingsActivity()
     {

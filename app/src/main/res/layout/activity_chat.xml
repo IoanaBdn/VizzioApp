@@ -32,7 +32,6 @@
 
         <LinearLayout
             android:id="@+id/chat_line_layout"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -56,6 +55,7 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/send_message"
+                android:contentDescription="Send message"
                 />
 
 
@@ -82,7 +82,6 @@
             android:keyTextColor="@android:color/white"
             android:keyBackground="@drawable/key_background"
             android:keyPreviewLayout="@xml/key_preview"
-
             android:visibility="gone" />
 
         <Keyboards.BrailleKeyboard

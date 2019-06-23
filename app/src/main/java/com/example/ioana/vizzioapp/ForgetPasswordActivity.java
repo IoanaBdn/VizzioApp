@@ -31,8 +31,52 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         InitializeFields();
-        InitializeListeners();
+
+
+
+        ResetPasswordButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                ResetPassword();
+            }
+        });
+
+
     }
+
+
+
+    private void ResetPassword()
+    {
+        if(!TextUtils.isEmpty(UserEmail.getText().toString()))
+        {
+            mAuth.sendPasswordResetEmail(UserEmail.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task)
+                        {
+                            if(task.isSuccessful())
+                            {
+                                Toast.makeText(ForgetPasswordActivity.this, "Password send to your email ",
+                                                Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                Toast.makeText(ForgetPasswordActivity.this, task.getException().getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+            else
+        {
+            Toast.makeText(ForgetPasswordActivity.this, "Insert your email address",
+                            Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
     private void InitializeFields() {
@@ -47,40 +91,5 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
     }
 
-    View.OnClickListener mClickListener = new View.OnClickListener()
-    {
-        @Override
-        public void onClick(View v)
-        {
-            if(!TextUtils.isEmpty(UserEmail.getText().toString()))
-            {
-                mAuth.sendPasswordResetEmail(UserEmail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if(task.isSuccessful())
-                        {
-                            Toast.makeText(ForgetPasswordActivity.this, "Password send to your email ",Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(ForgetPasswordActivity.this, task.getException().getMessage(),Toast.LENGTH_SHORT).show();
 
-                        }
-                    }
-                });
-            }
-            else
-            {
-                Toast.makeText(ForgetPasswordActivity.this, "Insert your email address",Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    };
-    private void InitializeListeners()
-    {
-
-        ResetPasswordButton.setOnClickListener(mClickListener);
-
-    }
 }

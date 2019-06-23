@@ -51,6 +51,8 @@ public class ChatsFragment extends Fragment
         // Inflate the layout for this fragment
         PrivateChatsView =  inflater.inflate(R.layout.fragment_chats, container, false);
 
+
+
         chatsList = (RecyclerView) PrivateChatsView.findViewById(R.id.chats_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 

@@ -3,6 +3,7 @@ package com.example.ioana.vizzioapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -254,6 +255,7 @@ public class RequestFragment extends Fragment {
                             {
                                 Button request_sent_btn = holder.itemView.findViewById(R.id.request_accept_btn);
                                 request_sent_btn.setText("Request Sent");
+                                request_sent_btn.setBackgroundColor(Constant.color);
 
 
                                 holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.INVISIBLE);

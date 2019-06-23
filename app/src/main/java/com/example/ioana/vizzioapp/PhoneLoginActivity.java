@@ -90,23 +90,9 @@ public class PhoneLoginActivity extends AppCompatActivity
         CountryPicker = findViewById(R.id.country_picker);
         CountryPicker.setAutoDetectedCountry(true);
 
-        //InputPhoneNumber.setText("+"+CountryCode);
 
 
-/*
-        CountryPicker.setOnCountryChangeListener(new CountryCodePicker.OnCountryChangeListener()
-        {
-            @Override
-            public void onCountrySelected()
-            {
 
-                String CountryCode = CountryPicker.getSelectedCountryCode();
-
-                InputPhoneNumber.setText("+"+CountryCode);
-            }
-        });
-        */
-        //
 
 
         InputPhoneNumber.setOnTouchListener(new View.OnTouchListener() {
@@ -217,12 +203,17 @@ public class PhoneLoginActivity extends AppCompatActivity
                     loadingBar.setMessage("Please wait while we are authenticating your phone");
                     loadingBar.setCanceledOnTouchOutside(false);
                     loadingBar.show();
+
+
                     PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                            phoneNumber,        // Phone number to verify
-                            120,                 // Timeout duration
-                            TimeUnit.SECONDS,   // Unit of timeout
-                            PhoneLoginActivity.this,               // Activity (for callback binding)
-                            callbacks);        // OnVerificationStateChangedCallbacks
+                            phoneNumber, // Phone number to verify
+                            120, // Timeout duration
+                            TimeUnit.SECONDS, // Unit of timeout
+                            PhoneLoginActivity.this, // Activity (for callback binding)
+                            callbacks); // OnVerificationStateChangedCallbacks
+
+
+
                 }
 
             }
@@ -255,7 +246,9 @@ public class PhoneLoginActivity extends AppCompatActivity
 
 
                     //Create a PhoneAuthCredential object
-                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
+
+                    PhoneAuthCredential credential;
+                    credential = PhoneAuthProvider.getCredential(mVerificationId, verificationCode);
                     signInWithPhoneAuthCredential(credential);
 
 
@@ -266,33 +259,31 @@ public class PhoneLoginActivity extends AppCompatActivity
 
 
         callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential)
             {
-
                 signInWithPhoneAuthCredential(phoneAuthCredential);
             }
+
 
             @Override
             public void onVerificationFailed(FirebaseException e)
             {
-                loadingBar.dismiss();
-                Toast.makeText(PhoneLoginActivity.this, "Invalid phone number, please enter a correct phone number and select your country.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhoneLoginActivity.this,
+                        "Invalid phone number, please enter a correct phone number and select your country.",
+                         Toast.LENGTH_SHORT).show();
 
                 SendVerificationButton.setVisibility(View.VISIBLE);
-               //InputPhoneNumber.setVisibility(View.VISIBLE);
                 LayoutPhoneNumber.setVisibility(View.VISIBLE);
                 PhoneLoginInfo.setVisibility(View.VISIBLE);
                 PhoneNumberReq.setVisibility(View.VISIBLE);
-
 
                 VerifyButton.setVisibility(View.INVISIBLE);
                 InputVerificationCode.setVisibility(View.INVISIBLE);
                 VerificationCodeReq.setVisibility(View.INVISIBLE);
 
             }
-
-
 
             public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token)
             {
@@ -304,15 +295,14 @@ public class PhoneLoginActivity extends AppCompatActivity
                 // Save verification ID and resending token so we can use them later
                 mVerificationId = verificationId;
                 mResendToken = token;
-                loadingBar.dismiss();
 
-                Toast.makeText(PhoneLoginActivity.this,"Code has been sent, check and verify. ",Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhoneLoginActivity.this,
+                        "Code has been sent, check and verify. ",
+                         Toast.LENGTH_SHORT).show();
 
                 SendVerificationButton.setVisibility(View.INVISIBLE);
-                //InputPhoneNumber.setVisibility(View.INVISIBLE);
                 LayoutPhoneNumber.setVisibility(View.INVISIBLE);
                 PhoneLoginInfo.setVisibility(View.INVISIBLE);
-
 
                 VerifyButton.setVisibility(View.VISIBLE);
                 InputVerificationCode.setVisibility(View.VISIBLE);
@@ -321,31 +311,36 @@ public class PhoneLoginActivity extends AppCompatActivity
 
             }
 
-
         };
     }
 
     //sing in the user
+
+
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task)
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task)
+                {
+                    if (task.isSuccessful())
                     {
-                        if (task.isSuccessful())
-                        {
-                            loadingBar.dismiss();
-                            Toast.makeText(PhoneLoginActivity.this, "Congratulations, you're logged in successfully", Toast.LENGTH_SHORT).show();
-                            SendUserToMainActivity();
-                        }
-                        else
-                        {
-                            String message = task.getException().toString();
-                            Toast.makeText(PhoneLoginActivity.this, "Error: "+message  , Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(PhoneLoginActivity.this,
+                                "You're logged in successfully",
+                                 Toast.LENGTH_SHORT).show();
+                        SendUserToMainActivity();
                     }
-                });
+                    else
+                    {
+                        String message = task.getException().toString();
+                        Toast.makeText(PhoneLoginActivity.this,
+                                "Error: "+message  ,
+                                 Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
     }
+
 
 
     private void SendUserToMainActivity()

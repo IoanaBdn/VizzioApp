@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
        android:layout_below="@+id/chat_toolbar"
         android:layout_above="@+id/send_message_layout"
-        android:background="@android:color/darker_gray">
+        android:background="#e6e6e6">
 
     </android.support.v7.widget.RecyclerView>
     
@@ -32,10 +32,10 @@
 
         <LinearLayout
             android:id="@+id/chat_line_layout"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+
 
             >
 
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:hint="type message here..."
                 android:padding="15dp"
-                android:maxLines="4"
+                android:maxLines="2"
                 android:textSize="20sp"
                 />
 
@@ -55,13 +55,37 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/send_message"
+                android:contentDescription="Send message"
                 />
 
 
         </LinearLayout>
 
-        <com.example.ioana.vizzioapp.VoiceInputKeyboard
-            android:id="@+id/keyboard"
+        <Keyboards.VoiceInputKeyboard
+            android:id="@+id/keyboard_voice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/chat_line_layout"
+            android:orientation="vertical"
+            android:visibility="gone"
+            />
+
+        <android.inputmethodservice.KeyboardView
+            android:id="@+id/keyboardview"
+            android:layout_below="@id/chat_line_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="false"
+            android:layout_centerHorizontal="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:keyTextColor="@android:color/white"
+            android:keyBackground="@drawable/key_background"
+            android:keyPreviewLayout="@xml/key_preview"
+            android:visibility="gone" />
+
+        <Keyboards.BrailleKeyboard
+            android:id="@+id/keyboard_braille"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/chat_line_layout"

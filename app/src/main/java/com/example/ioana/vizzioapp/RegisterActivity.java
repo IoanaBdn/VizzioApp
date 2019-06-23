@@ -29,6 +29,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     private FirebaseAuth mAuth;
+
+
     private DatabaseReference RootRef;
 
     private Toolbar mToolbar;
@@ -43,7 +45,11 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         //
+
+
         mAuth = FirebaseAuth.getInstance();
+
+
         RootRef = FirebaseDatabase.getInstance().getReference();
 
 
@@ -58,6 +64,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+
         RegisterButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -65,6 +72,8 @@ public class RegisterActivity extends AppCompatActivity {
                 CreateNewAccount();
             }
         });
+
+
     }
     //____________________________________UTILS____________________________________//
     private void CreateNewAccount()
@@ -89,28 +98,31 @@ public class RegisterActivity extends AppCompatActivity {
 
 
             mAuth.createUserWithEmailAndPassword(email,password)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        if(task.isSuccessful())
                         {
-                            if(task.isSuccessful())
-                            {
-                                String currentUserID = mAuth.getCurrentUser().getUid();
-                                RootRef.child("Users").child(currentUserID).setValue("");
-
-                                SendUserToMainActivity();
-                                Toast.makeText(RegisterActivity.this, "Account cerated successfully", Toast.LENGTH_SHORT);
-                                loadingBar.dismiss();
-                            }
-                            else
-                            {
-                                String message = task.getException().toString();
-                                Toast.makeText(RegisterActivity.this, "Error : "+ message , Toast.LENGTH_SHORT);
-                                loadingBar.dismiss();
-                            }
-
+                            String currentUserID = mAuth.getCurrentUser().getUid();
+                            RootRef.child("Users").child(currentUserID).setValue("");
+                            SendUserToMainActivity();
+                            Toast.makeText(RegisterActivity.this,"Account created successfully",
+                                            Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
                         }
-                    });
+                        else
+                        {
+                            String message = task.getException().toString();
+                            Toast.makeText(RegisterActivity.this,"Error : "+ message ,
+                                            Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
+                        }
+                    }
+                });
+
+
         }
     }
 

@@ -2,6 +2,10 @@ package com.example.ioana.vizzioapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -31,6 +35,22 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    ///////////////////////////////////////////////
+    Constant constant;
+    SharedPreferences.Editor editor;
+    SharedPreferences app_preferences;
+    int appTheme;
+    int themeColor;
+    int appColor;
+    ///////////////////////////////////////////////
+
+
+
+
+
+
+
+
     private Toolbar mToolbar;
     //locul in care se afiseaza continutul taburilor
     private ViewPager myViewPager;
@@ -50,10 +70,31 @@ public class MainActivity extends AppCompatActivity {
 
     private String currentUserID;
 
+    private UserPreferencesManager userPreferencesManager = new UserPreferencesManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+///////////////////////////////////////////////////////////////////////
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        appColor = app_preferences.getInt("color", 0);
+        appTheme = app_preferences.getInt("theme", 0);
+        themeColor = appColor;
+        constant.color = appColor;
+
+        if (themeColor == 0){
+            setTheme(Constant.theme);
+        }else if (appTheme == 0){
+            setTheme(Constant.theme);
+        }else{
+            setTheme(appTheme);
+        }
+///////////////////////////////////////////////////////////////////////
+
+        userPreferencesManager.initializePreferences(this);
+
         setContentView(R.layout.activity_main);
 
         //
@@ -62,21 +103,26 @@ public class MainActivity extends AppCompatActivity {
         RootRef = FirebaseDatabase.getInstance().getReference();
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        mToolbar.setBackgroundColor(Constant.color);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("VizzioApp");
 
         //tabs
         myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
+
         myTabsAccesorAdapter = new TabsAccesorAdapter(getSupportFragmentManager());
         myViewPager.setAdapter(myTabsAccesorAdapter);
 
         myTabLayout = (TabLayout) findViewById(R.id.main_tabs);
+        myTabLayout.setBackgroundColor(Constant.color);
         myTabLayout.setupWithViewPager(myViewPager);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -90,6 +136,14 @@ public class MainActivity extends AppCompatActivity {
 
             VerifyUserExistance();
         }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        userPreferencesManager.initializePreferences(this);
+
     }
 
     @Override
@@ -185,10 +239,12 @@ public class MainActivity extends AppCompatActivity {
         {
             SendUserToSettingsActivity();
         }
+        /*
         if(item.getItemId() == R.id.main_create_group_option)
         {
             RequestNewGroup();
         }
+        */
         if(item.getItemId() == R.id.main_find_friends_option)
         {
             SendUserToFindFriendsActivity();
@@ -202,58 +258,9 @@ public class MainActivity extends AppCompatActivity {
         Intent findFriendsIntent = new Intent(this, FindFriendsActivity.class);
 
         startActivity(findFriendsIntent);
-        finish();
+        //finish();
     }
 
-    private void RequestNewGroup()
-    {
-        AlertDialog.Builder buider = new AlertDialog.Builder( MainActivity.this, R.style.AlertDialog);
-        buider.setTitle("Enter Group Name:");
-
-        final EditText groupNameField = new EditText (MainActivity.this);
-        groupNameField.setHint("e.g Some Group Name");
-        buider.setView(groupNameField);
-        buider.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                String  groupName  = groupNameField.getText().toString();
-
-                if(TextUtils.isEmpty(groupName))
-                {
-                    Toast.makeText(MainActivity.this, "Please write group name!", Toast.LENGTH_SHORT);
-                }
-                else
-                {
-                    CreateNewGroup(groupName);
-                }
-            }
-        });
-        buider.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                dialog.cancel();
-            }
-        });
-        buider.show();
-    }
-
-    private void CreateNewGroup(final String groupName)
-    {
-        // in cazul asta group name este drept id
-        RootRef.child("Groups").child(groupName).setValue("")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task)
-                    {
-                        if(task.isSuccessful())
-                        {
-                            Toast.makeText(MainActivity.this, groupName + " group is created successfully", Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
-    }
 
 
     private void SendUserToSettingsActivity()
